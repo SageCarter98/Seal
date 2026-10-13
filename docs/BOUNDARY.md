@@ -33,10 +33,15 @@ Concretely absent, and absent **deliberately**:
 | Evidence storage, retention, disposal | F08 | D08 |
 | Web dashboard, HTTP export endpoint, signed downloads | W04's platform half | W01–W03, F08 |
 
-A decision pack for D04 — the unselected Trivy/Semgrep adapter — is drafted at
-[`docs/decisions/D04_scanner_adapter_selection.md`](decisions/D04_scanner_adapter_selection.md).
-It is a pack, not a decision: the selection is unrecorded and the adapter row above
-stays blocked until a named authority signs it.
+A decision pack for D04 — the unselected Trivy/Semgrep adapter — is at
+[`docs/decisions/D04_scanner_adapter_selection.md`](decisions/D04_scanner_adapter_selection.md),
+with the empty pinning and evidence form it will need at
+[`docs/decisions/D04_pinning_record.md`](decisions/D04_pinning_record.md) and the
+identity probe behind its §5 at [`tools/`](../tools/README.md). It is a pack, not a
+decision: the selection is unrecorded and the adapter row above stays blocked until a
+named authority signs §13. The pinning form is empty, and the probe's fixtures are
+simulated, because populating either requires running a scanner — which is exactly
+what this repository cannot do.
 
 The `release` module decides whether a claim's evidence supports it and who may accept it. It cannot accept anything: there is no `approve` or `sign_off` function, no module-level structure to write a decision into, and a test parses the module to keep it that way. Gate decisions stay where the PM Framework puts them.
 
