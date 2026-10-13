@@ -1,0 +1,38 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "seal-core"
+version = "0.2.0.dev0"
+description = "Seal decision core - pure, offline models of the v1.6 engineering contracts"
+requires-python = ">=3.10"
+# F01 pinned-dependency policy: the decision core takes ZERO runtime dependencies.
+# Nothing here may import a network, database or scanner library. See docs/BOUNDARY.md.
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+  "pytest==8.3.4",
+  "ruff==0.8.6",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q --strict-markers"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+# SIM300 reads `MY_CONSTANT == timedelta(seconds=5)` as a Yoda condition. In a
+# test asserting a named ceiling equals its documented value, the constant
+# belongs on the left.
+"tests/*" = ["SIM300"]
