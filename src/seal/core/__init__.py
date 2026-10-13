@@ -19,43 +19,59 @@ U04, C01     ``closure`` -- proof review and stale-intent finalization
 U05          ``identity``, ``lifecycle`` -- fingerprints, states, exceptions
 U06          ``priority`` -- the SSVC-style tree and overrides
 U07, U08     ``audit`` -- hash chain, anchor outbox, evidence custody
+U10, L01     ``admission`` -- bounded validation of untrusted adapter output
+W04, U08     ``export`` -- tenant-scoped rows, guarded cells, no raw content
+U14          ``release`` -- claims bound to evidence and a competent authority
+U11          ``incident`` -- halt, hold, routing, undetermined legal duty
+U12          ``recovery`` -- idempotency, leases, retry rechecks, checkpoints
 U13, C03     ``metrics`` -- exposure measures with visible denominators
 C02          ``integrity`` -- admission state, generation, stop budgets
 ===========  ==========================================================
 
-U09 (tenant isolation), U10 (pinned revisions), U11 (incident path) and U12
-(safe recovery) are partially represented: the organization boundary is carried
-through every contract and ``coverage.ToolRevisions`` pins the U10 inputs, but
-their enforcement points are PostgreSQL RLS, container admission and the queue
--- none of which exist yet, and none of which this package claims.
+U09 (tenant isolation) remains partially represented: the organization boundary
+is carried through every contract and hashed into every identity, but its
+enforcement point is PostgreSQL RLS, which does not exist yet and which this
+package does not claim. U14 is now partly represented: ``release`` binds a claim
+to its evidence and names who may accept it, but recording that acceptance
+remains a human gate decision, and nothing in that module can do it.
 """
 
 from . import (
+    admission,
     audit,
     authorization,
     closure,
     coverage,
     decision,
     egress,
+    export,
     identity,
+    incident,
     integrity,
     lifecycle,
     metrics,
     priority,
     reasons,
+    recovery,
+    release,
 )
 
 __all__ = [
+    "admission",
     "audit",
     "authorization",
     "closure",
     "coverage",
     "decision",
     "egress",
+    "export",
     "identity",
+    "incident",
     "integrity",
     "lifecycle",
     "metrics",
     "priority",
     "reasons",
+    "recovery",
+    "release",
 ]

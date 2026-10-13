@@ -8,27 +8,29 @@ executable checks. It does **not** mean the production control exists, has been
 built, or has been accepted. Spec §2: *"Passing a model test is not acceptance
 of the corresponding production control."*
 
-Counts below are from `python -m pytest --collect-only -q`, run 12 October 2026.
-Total: **427 tests, all passing**; `ruff check` and `ruff format --check` clean.
+Counts below are from `python -m pytest --collect-only -q`, run 13 October 2026.
+Total: **705 tests, all passing**; `ruff check` and `ruff format --check` clean.
 
 ## Upgrade requirements
 
 | ID | Required outcome | Module | Tests | Status |
 |---|---|---|---|---|
 | U01 | Revalidate scope and revocation at execution and every request | `authorization` | `test_authorization.py` (37) | Modelled |
+| L01 | Versioned adapter contract and bounded parser | `admission` | `test_admission.py` (77) | **Modelled** — malformed, oversized, over-nested, unknown-version and cross-tenant output refused before parsing; allowlisted fields; traversal and URL references rejected. No adapter exists to produce real output (D04 unselected) |
 | U02 | Enforce destinations and limits outside the scanner | `egress` | `test_egress.py` (40) | Modelled (decision only — no network capability exists) |
 | U03 | Record successful, skipped, failed and unsupported checks | `coverage` | `test_coverage.py` (31) | Modelled |
 | U04 | Bind closure to the repaired revision and independent proof | `closure` | `test_closure.py` (41) | Modelled |
 | U05 | Separate lifecycle state from recurrence and exceptions | `lifecycle`, `identity` | `test_lifecycle.py` (34), `test_identity.py` (36) | Modelled |
 | U06 | Version an explainable priority tree and expiry rules | `priority` | `test_priority.py` (46) | Modelled |
 | U07 | Reconcile external anchors and gate high-risk closure | `audit` | `test_audit.py` (44) | **Partial** — chain, outbox and receipt semantics modelled; no real separated sink, no signature verification |
-| U08 | Minimize evidence and enforce holds and disposal | `audit.EvidenceRecord` | `test_audit.py::TestEvidenceCustody` | **Partial** — hold and disposal decisions modelled; no storage, encryption or key administration |
-| U09 | Derive identity and tenant context from trusted services | all modules | throughout | **Partial** — the organization boundary is carried through and hashed into every identity; PostgreSQL RLS, connection-pool reuse and worker paths are untested because none exist |
-| U10 | Pin tools, rules, data and transformation versions | `coverage.ToolRevisions` | `test_coverage.py::TestPinnedRevisions` | **Partial** — the manifest pins every required input; container admission and signature/provenance verification are absent |
-| U11 | Persist incident halt, hold and notification decisions | — | — | **Not started** — needs D09/D10; `integrity` covers the halt, not the incident path |
-| U12 | Recover without duplicate or unauthorized execution | `integrity`, `closure` | `test_integrity.py::TestC02C`, `test_closure.py::TestC01D` | **Partial** — resume authorization and stale-decision rejection modelled; no queue, lease or checkpoint persistence |
+| U08 | Minimize evidence and enforce holds and disposal | `audit.EvidenceRecord`, `recovery.checkpoint_is_safe`, `export` | `test_audit.py::TestEvidenceCustody`, `test_recovery.py::TestCheckpointSafety`, `test_export.py::TestEvidenceViews` | **Partial** — hold, disposal, checkpoint-content and export-minimization decisions modelled: an evidence view exports custody metadata only, refuses unsanitized or quarantined material, and reduces the access log to a count. No storage, encryption or key administration |
+| U09 | Derive identity and tenant context from trusted services | all modules | throughout | **Partial** — the organization boundary is carried through and hashed into every identity, and `admission` refuses a result that claims a different tenant; PostgreSQL RLS, connection-pool reuse and worker paths are untested because none exist |
+| U10 | Pin tools, rules, data and transformation versions | `coverage.ToolRevisions`, `admission` | `test_coverage.py::TestPinnedRevisions`, `test_admission.py` (77) | **Partial** — the manifest pins every required input and untrusted adapter output is now bounded and validated; container admission and signature/provenance verification are absent |
+| U11 | Persist incident halt, hold and notification decisions | `incident` | `test_incident.py` (38) | **Modelled** — halt, hold, routing from recorded contacts, no autonomous external contact, and an undetermined legal duty that escalates rather than defaulting to "no duty". The D09 counsel determination it defers to is still outstanding |
+| U12 | Recover without duplicate or unauthorized execution | `recovery`, `integrity`, `closure` | `test_recovery.py` (52), `test_integrity.py::TestC02C`, `test_closure.py::TestC01D` | **Modelled** — idempotent delivery, single current lease, five-way retry revalidation, credential-free checkpoints and the v1.3 recovery targets. No real queue or persistence, so the timings are arithmetic over supplied measurements, not measured recovery |
 | U13 | Show exposure, coverage, aging and reopen rates | `metrics`, `coverage` | `test_metrics.py` (32) | Modelled (measures only — no dashboard) |
-| U14 | Bind release claims to evidence and authority | — | — | **Not started** — a gate record is a human authority's action, not code |
+| U14 | Bind release claims to evidence and authority | `release` | `test_release.py` (34) | **Partial** — the binding is modelled: a claim with no locatable, digest-bound, verified, same-revision evidence is refused; a model check cannot support a production-control claim; the claimant and the evidence producer cannot accept; a pack names its gaps instead of rounding them up. Recording the acceptance is a human gate decision and the module has no function or state that could |
+| W04 | Tenant-filtered JSON/CSV export with guarded output | `export` | `test_export.py` (62) | **Partial** — the serialization decision is modelled: membership-derived tenant scope, role gate, allowlisted columns, CSV formula guard, display escaping, canonical JSON, and deferred formats refused *as deferred*. The dashboard, HTTP surface and signed download are absent (W01–W03, F08) |
 
 ## v1.5 review corrections
 
@@ -67,11 +69,14 @@ asserts each one:
 | Package | Deliverable | This increment |
 |---|---|---|
 | F01 | Repository structure, pinned dependency policy, internal CI, secret handling, controlled build | **Structural half delivered**: layout, zero-dependency policy, CI (lint + format + test on 3.10/3.13 + purity boundary + credential guard), `.gitignore` excluding evidence and key material. Synthetic lab isolation and the controlled build process remain open; F01 stays **Blocked** on D03 and D05. |
-| F02–F08, L01–L05, W01–W05 | — | Not started. The decision contracts several of them depend on are modelled here as reviewable design, which is what spec §5 permits as "fixtures… for permitted design work". |
+| L01 | Versioned adapter input/output contracts and bounded parser | **Decision half delivered**: `admission` validates untrusted adapter output against an expected binding with size, depth, type, enumeration, allowlist and reference checks, refusing hostile input before parsing. The adapter itself cannot be built — D04 has not selected Trivy or Semgrep. |
+| U14/G4 | Release claims bound to evidence and authority | **Decision half delivered**: `release` decides whether the evidence offered supports the claim made, and whether a named authority is competent and independent enough to accept it. The acceptance itself, the gate record and the signature stay with the gate's accountable person — spec §10's own words, that none of these rows "constitutes an approval signature", apply to this module most of all. |
+| W04 | Role-based dashboard, evidence views, management summary and tenant-filtered JSON/CSV export | **Decision half delivered**: `export` decides which rows may leave (tenant from authenticated membership, never from a request parameter), which columns may leave (allowlists that exclude person fields unless the role permits them, and have no column raw content could occupy), and how a value from untrusted adapter output is rendered (formula guard, uniform RFC 4180 quoting, display escaping, control characters refused). The dashboard, role session, HTTP response and signed download are W04's platform half and are **not started** — they depend on W01–W03 and F08. |
+| F02–F08, L02–L05, W01–W03, W05 | — | Not started. The decision contracts several of them depend on are modelled here as reviewable design, which is what spec §5 permits as "fixtures… for permitted design work". |
 
 ## Design decisions taken here, and why
 
-Three places where the specification's intent needed a concrete choice. Each is
+Seven places where the specification's intent needed a concrete choice. Each is
 a judgment that should be reviewed, not a settled requirement:
 
 1. **`Action.TRIAGE` as a distinct priority outcome.** Spec §6 says unknown
@@ -91,3 +96,31 @@ a judgment that should be reviewed, not a settled requirement:
    resume.** C02 requires outstanding grants and leases revoked at detection.
    Incrementing only on resume would leave every grant minted before the
    failure valid for the whole outage — the exact window C02 closes.
+
+4. **Idempotency keys are namespaced per tenant rather than globally unique.**
+   A first-pass test demanded that a cross-tenant key collision be *rejected*.
+   That mechanism would have created the attack the test's own rationale said
+   to prevent: burn a key in tenant A and tenant B's legitimate delivery gets
+   refused. Per-tenant namespaces make the collision impossible instead, so one
+   tenant's key choices cannot affect another's at all.
+
+5. **A foreign-tenant row refuses the whole export rather than being
+   filtered out of it.** W04's acceptance evidence is that the server
+   enforces scope. Dropping the row would satisfy the letter of that and
+   hide the real fault — a query that reached across tenants — behind a
+   download that looks complete. The export is therefore all-or-nothing,
+   and `TENANT_MISMATCH` names the condition.
+
+6. **The CSV formula guard applies to text, not to typed numbers.** A `-`
+   prefixed onto every negative number would corrupt the figures a reviewer
+   is reading, so the guard runs on string cells — the ones an adapter chose
+   the contents of — and numeric fields render as themselves. The trigger
+   set includes tab, CR and LF as well as `= + - @ |`, because a spreadsheet
+   strips leading whitespace before deciding whether a cell is a formula.
+
+7. **`DutyStatus.UNDETERMINED` is distinct from `NO_DUTY`, and an unsigned
+   status collapses to undetermined.** Spec §8 requires pending legal guidance
+   to be "visibly owned and escalated, never silently treated as approval". A
+   single boolean, or a `NO_DUTY` default, would make silence read as clearance.
+   Exceeding the carried-forward 24-hour clock therefore reports elapsed time
+   and escalates, but never asserts a breach of a duty nobody has determined.
