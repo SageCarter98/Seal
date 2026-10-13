@@ -9,7 +9,7 @@ built, or has been accepted. Spec §2: *"Passing a model test is not acceptance
 of the corresponding production control."*
 
 Counts below are from `python -m pytest --collect-only -q`, run 13 October 2026.
-Total: **668 tests, all passing**; `ruff check` and `ruff format --check` clean.
+Total: **705 tests, all passing**; `ruff check` and `ruff format --check` clean.
 
 ## Upgrade requirements
 
@@ -29,7 +29,7 @@ Total: **668 tests, all passing**; `ruff check` and `ruff format --check` clean.
 | U11 | Persist incident halt, hold and notification decisions | `incident` | `test_incident.py` (38) | **Modelled** — halt, hold, routing from recorded contacts, no autonomous external contact, and an undetermined legal duty that escalates rather than defaulting to "no duty". The D09 counsel determination it defers to is still outstanding |
 | U12 | Recover without duplicate or unauthorized execution | `recovery`, `integrity`, `closure` | `test_recovery.py` (52), `test_integrity.py::TestC02C`, `test_closure.py::TestC01D` | **Modelled** — idempotent delivery, single current lease, five-way retry revalidation, credential-free checkpoints and the v1.3 recovery targets. No real queue or persistence, so the timings are arithmetic over supplied measurements, not measured recovery |
 | U13 | Show exposure, coverage, aging and reopen rates | `metrics`, `coverage` | `test_metrics.py` (32) | Modelled (measures only — no dashboard) |
-| U14 | Bind release claims to evidence and authority | — | — | **Not started** — a gate record is a human authority's action, not code |
+| U14 | Bind release claims to evidence and authority | `release` | `test_release.py` (34) | **Partial** — the binding is modelled: a claim with no locatable, digest-bound, verified, same-revision evidence is refused; a model check cannot support a production-control claim; the claimant and the evidence producer cannot accept; a pack names its gaps instead of rounding them up. Recording the acceptance is a human gate decision and the module has no function or state that could |
 | W04 | Tenant-filtered JSON/CSV export with guarded output | `export` | `test_export.py` (62) | **Partial** — the serialization decision is modelled: membership-derived tenant scope, role gate, allowlisted columns, CSV formula guard, display escaping, canonical JSON, and deferred formats refused *as deferred*. The dashboard, HTTP surface and signed download are absent (W01–W03, F08) |
 
 ## v1.5 review corrections
@@ -70,6 +70,7 @@ asserts each one:
 |---|---|---|
 | F01 | Repository structure, pinned dependency policy, internal CI, secret handling, controlled build | **Structural half delivered**: layout, zero-dependency policy, CI (lint + format + test on 3.10/3.13 + purity boundary + credential guard), `.gitignore` excluding evidence and key material. Synthetic lab isolation and the controlled build process remain open; F01 stays **Blocked** on D03 and D05. |
 | L01 | Versioned adapter input/output contracts and bounded parser | **Decision half delivered**: `admission` validates untrusted adapter output against an expected binding with size, depth, type, enumeration, allowlist and reference checks, refusing hostile input before parsing. The adapter itself cannot be built — D04 has not selected Trivy or Semgrep. |
+| U14/G4 | Release claims bound to evidence and authority | **Decision half delivered**: `release` decides whether the evidence offered supports the claim made, and whether a named authority is competent and independent enough to accept it. The acceptance itself, the gate record and the signature stay with the gate's accountable person — spec §10's own words, that none of these rows "constitutes an approval signature", apply to this module most of all. |
 | W04 | Role-based dashboard, evidence views, management summary and tenant-filtered JSON/CSV export | **Decision half delivered**: `export` decides which rows may leave (tenant from authenticated membership, never from a request parameter), which columns may leave (allowlists that exclude person fields unless the role permits them, and have no column raw content could occupy), and how a value from untrusted adapter output is rendered (formula guard, uniform RFC 4180 quoting, display escaping, control characters refused). The dashboard, role session, HTTP response and signed download are W04's platform half and are **not started** — they depend on W01–W03 and F08. |
 | F02–F08, L02–L05, W01–W03, W05 | — | Not started. The decision contracts several of them depend on are modelled here as reviewable design, which is what spec §5 permits as "fixtures… for permitted design work". |
 

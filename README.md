@@ -30,12 +30,12 @@ specification describes. It is not acceptance evidence for a production control.
 
 | | |
 |---|---|
-| Tests | **668**, all passing |
+| Tests | **705**, all passing |
 | Lint | `ruff check` and `ruff format --check` clean |
 | Runtime dependencies | **zero**, enforced by test |
 | Python | 3.10+ |
 
-The fourteen contract modules, and the requirement each one implements:
+The fifteen contract modules, and the requirement each one implements:
 
 ```
 src/seal/core/
@@ -53,6 +53,7 @@ src/seal/core/
   closure.py     U04/C01  proof review, then stale-intent finalization
   metrics.py     U13/C03  exposure measures with visible denominators
   export.py      W04/U08  tenant-scoped rows, guarded cells, no raw content
+  release.py         U14  claims bound to evidence and a competent authority
 ```
 
 [`docs/TRACEABILITY.md`](docs/TRACEABILITY.md) maps every requirement to its
@@ -110,7 +111,7 @@ change can reduce reported exposure. Zero confirmed findings reports
 
 ```bash
 python -m pip install -e ".[dev]"
-python -m pytest                       # 668 tests
+python -m pytest                       # 705 tests
 python -m pytest tests/test_boundary.py -v   # the purity boundary
 python -m ruff check src tests
 ```
