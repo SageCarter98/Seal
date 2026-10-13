@@ -20,6 +20,7 @@ U05          ``identity``, ``lifecycle`` -- fingerprints, states, exceptions
 U06          ``priority`` -- the SSVC-style tree and overrides
 U07, U08     ``audit`` -- hash chain, anchor outbox, evidence custody
 U10, L01     ``admission`` -- bounded validation of untrusted adapter output
+W04, U08     ``export`` -- tenant-scoped rows, guarded cells, no raw content
 U11          ``incident`` -- halt, hold, routing, undetermined legal duty
 U12          ``recovery`` -- idempotency, leases, retry rechecks, checkpoints
 U13, C03     ``metrics`` -- exposure measures with visible denominators
@@ -41,6 +42,7 @@ from . import (
     coverage,
     decision,
     egress,
+    export,
     identity,
     incident,
     integrity,
@@ -59,6 +61,7 @@ __all__ = [
     "coverage",
     "decision",
     "egress",
+    "export",
     "identity",
     "incident",
     "integrity",
