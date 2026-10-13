@@ -1,0 +1,20 @@
+{
+  "trivy.json": {
+    "tool": "trivy",
+    "provenance": "simulated",
+    "note": "Hand-written to the documented shape of `trivy fs --scanners vuln --format json`. No scanner was installed or run. Replace with real output and set provenance to 'real' to discharge decision-pack section 11 step 6.",
+    "tool_version": null,
+    "db_digest": null,
+    "db_timestamp": null,
+    "captured": null
+  },
+  "semgrep.json": {
+    "tool": "semgrep",
+    "provenance": "simulated",
+    "note": "Hand-written to the documented shape of `semgrep --json`, including two findings of the same rule in the same file so the identity-collision case is exercised. No scanner was installed or run.",
+    "tool_version": null,
+    "rule_digest": null,
+    "rule_revision": null,
+    "captured": null
+  }
+}

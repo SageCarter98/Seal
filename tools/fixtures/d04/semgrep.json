@@ -1,0 +1,52 @@
+{
+  "version": "1.90.0",
+  "results": [
+    {
+      "check_id": "python.lang.security.audit.dangerous-subprocess-use",
+      "path": "app/handlers/upload.py",
+      "start": { "line": 42, "col": 5 },
+      "end": { "line": 42, "col": 60 },
+      "extra": {
+        "severity": "ERROR",
+        "message": "Detected subprocess function with a shell-interpreted argument",
+        "fingerprint": "simulated-fingerprint-a",
+        "lines": "        run_command(user_supplied)",
+        "metadata": { "cwe": ["CWE-78: Improper Neutralization of Special Elements"] },
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "python.lang.security.audit.dangerous-subprocess-use",
+      "path": "app/handlers/upload.py",
+      "start": { "line": 118, "col": 9 },
+      "end": { "line": 118, "col": 64 },
+      "extra": {
+        "severity": "ERROR",
+        "message": "Detected subprocess function with a shell-interpreted argument",
+        "fingerprint": "simulated-fingerprint-b",
+        "lines": "            run_command(other_input)",
+        "metadata": { "cwe": ["CWE-78: Improper Neutralization of Special Elements"] },
+        "engine_kind": "OSS"
+      }
+    },
+    {
+      "check_id": "python.django.security.audit.unvalidated-password",
+      "path": "app/accounts/views.py",
+      "start": { "line": 77, "col": 13 },
+      "end": { "line": 77, "col": 48 },
+      "extra": {
+        "severity": "WARNING",
+        "message": "Password is set without validation",
+        "fingerprint": "simulated-fingerprint-c",
+        "lines": "            user.set_password(raw)",
+        "metadata": { "cwe": ["CWE-521: Weak Password Requirements"] },
+        "engine_kind": "OSS"
+      }
+    }
+  ],
+  "errors": [],
+  "paths": {
+    "scanned": ["app/handlers/upload.py", "app/accounts/views.py"],
+    "skipped": []
+  }
+}

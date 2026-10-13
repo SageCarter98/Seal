@@ -11,7 +11,8 @@ remains **Unconfirmed / Blocked** until a named authority signs §13 of this doc
 | Required evidence | One approved adapter decision; language/artifact coverage, licensing review, fixture suitability, capacity. "Trivy excludes configuration scanning" |
 | Blocks | L03 (adapter integration), L04/L05 downstream, a documented part of Phase 2 |
 | Drafted | 2026-10-13, by Claude Opus 5 at the owner's instruction |
-| Status of this pack | Prepared for review. Not reviewed, not approved, not evidence of any gate |
+| Revision 2 | 2026-10-13. §11.1 discharged: licences retrieved and read, so §6 now carries verified citations instead of unverified notes. **The finding changed the picture** — see §6.1. §9, §10 and §12 adjusted accordingly |
+| Status of this pack | Revision 1 reviewed and APPROVED by Russell Kenny (kenAddme) on PR #3, merged as `ca3e3da`. That approved the pack as an artefact; it recorded no selection. Revision 2 needs its own review |
 
 ## 1. The decision as the baseline states it
 
@@ -89,6 +90,14 @@ at all for the foreseeable phases.
 | Misses | Everything in first-party code; anything with no advisory; vendored code with no manifest | Anything no selected rule describes; flows the OSS engine cannot follow across files |
 | Denominator for `coverage.py` | Countable and defensible: these N manifests, these M packages, these K skipped | Harder: "files scanned" is countable, but *weakness-class* coverage requires enumerating what the pinned rule set does **not** cover, per language |
 
+One detail in the "Misses" row is now verified rather than assumed (2026-10-13):
+Semgrep's Community Edition provides "Single file, cross function constant
+propagation" and "Single function taint analysis", while cross-file and cross-function
+taint analysis belong to the paid platform, as do Pro Rules
+(docs.semgrep.dev/semgrep-pro-vs-oss). So Option B's false-negative profile on
+multi-file data flows is a property of the free engine, not a tuning question — and it
+has to be stated in L05's coverage manifest rather than discovered in a pilot.
+
 That last row is the one that matters for Seal specifically. `coverage.py` exists to
 stop "no findings" from overstating protection, and U13 requires the same honesty in
 what the product claims. With Option A, the uncovered set is a list of artefacts.
@@ -159,24 +168,65 @@ discover during L03.
 
 ## 6. Dimension 3 — licensing review
 
-**Flagged as unverified.** v1.6 requires exactly this: "Pin and verify current tool
-behavior, versions and licenses during D04/F01/L01." Spec §8 also makes *licence
-review* a recorded field per approved scanner combination. The notes below are
-starting points for that review, drawn from a model whose knowledge has a cutoff; no
-licence text was retrieved while drafting this pack. §11 lists the checks that must
-be run before §13 is signed.
+**Discharged on 2026-10-13.** §11.1 required the licences to be retrieved and read
+rather than recalled. They were, from primary sources, on 2026-10-13. Every statement
+below is a quotation or a direct reading of a document fetched on that date; the
+retrieval dates matter, because licence terms change and v1.6 requires them re-checked
+at pin time.
+
+### 6.1 The finding that changes the picture
+
+**Semgrep's own rules are licensed for internal use only and may not be made
+available to others as a service.** `semgrep-rules`, the open-source rule corpus
+behind the registry's community rules, is not under the engine's LGPL. Its `LICENSE`
+names the **Semgrep Rules License v1.0**, whose operative restriction reads:
+
+> "You may use the rules only for your own internal business purposes. This license
+> does not allow you to distribute the rules, or to make them available to others as
+> a service."
+>
+> — https://semgrep.dev/legal/rules-license, retrieved 2026-10-13
+
+Seal is a multi-tenant service that assesses other organisations' assets and shows
+them the findings. On the face of the text, shipping Semgrep's community rules as
+part of that service is the thing this licence excludes. That is a licensing question
+with a plain reading, not a settled legal conclusion — **it belongs to the D09
+regulatory/legal workstream to confirm**, and this pack does not decide it.
+
+What it does mean for D04 is concrete: **Option B cannot assume the community rule
+corpus.** Either a commercial agreement with Semgrep, Inc. covers service use, or
+Seal writes and maintains its own rules in Semgrep's syntax — which is permitted (the
+licence covers only rules provided by Semgrep, Inc.) but means authoring and
+maintaining a rule corpus as ongoing project work, and losing the breadth that made
+Option B attractive in the first place.
+
+### 6.2 Verified licence positions
 
 | | Trivy (dependency-only) | Semgrep OSS |
 |---|---|---|
-| Engine licence to confirm | Apache-2.0 expected | LGPL-2.1 expected for the OSS engine |
-| Content licence to confirm | The advisory database is **aggregated** from sources with their own terms (NVD, GitHub Advisory Database, distro feeds). GHSA-derived content has an attribution condition | Community rule content carries its own terms, and some rules are not under the engine's licence |
-| Commercial boundary | Dependency-only use is squarely in the open-source scope | Pro engine and Pro rules are proprietary and must be excluded, evidenced as excluded |
-| External-service coupling | Advisory DB is pulled as an OCI artefact; rate limits and registry terms apply, and a mirror is needed for an isolated lab | Rule registry fetch and default telemetry both reach out; both must be disabled and rules vendored |
-| Record required by spec §8 | Image digest, signature/provenance verification, licence review, advisory DB digest **and timestamp**, adapter/schema/transformation versions | Same, with rule digest in place of advisory DB digest |
+| Engine | **Apache-2.0** — `aquasecurity/trivy` `LICENSE`, "Apache License, Version 2.0, January 2004" (retrieved 2026-10-13) | **LGPL-2.1** — `semgrep/semgrep` `LICENSE`, "GNU LESSER GENERAL PUBLIC LICENSE, Version 2.1, February 1999" (retrieved 2026-10-13) |
+| Database / rule tooling | **Apache-2.0** — `aquasecurity/trivy-db` `LICENSE` (retrieved 2026-10-13) | n/a |
+| Content Seal would ship | Advisory data, predominantly **GitHub Advisory Database**, which Trivy names as the source for pip, npm, Java, Go, Rust, .NET, Dart, Elixir, Swift, PHP and Ruby ecosystems. GHSA is **CC-BY-4.0** (`github/advisory-database` `LICENSE.md`, retrieved 2026-10-13) | **Semgrep Rules License v1.0** — internal use only, no distribution, no service use (§6.1) |
+| Obligation created | **Attribution.** CC-BY-4.0 requires, when sharing the material, retaining creator identification, a copyright notice and a notice referring to the licence, and indicating modifications | **A blocker to resolve**, not an obligation to discharge (§6.1) |
+| Commercial boundary | Dependency-only use sits inside the open-source scope | Pro engine and Pro rules are paid-platform features and must be excluded and evidenced as excluded |
+| Telemetry | No telemetry concern in the scan path; `check.trivy.dev` is an optional update check that can be disabled | **Better than this pack first claimed.** Semgrep "does **not** enable metrics when running with only local configuration files or command-line search patterns", and does enable them "if rules are loaded from the Semgrep Registry" (docs.semgrep.dev/metrics, retrieved 2026-10-13). Vendored local rules therefore send nothing; `--metrics off` makes that explicit rather than implicit |
 
-Neither option is licence-blocked on the face of it. Both impose an attribution or
-exclusion obligation that must be written down rather than assumed.
+### 6.3 Obligations either option still creates
 
+- **Binary redistribution notices.** Both engines ship inside a worker image Seal
+  distributes. Apache-2.0 requires the licence and notices to travel with it;
+  LGPL-2.1 adds notice and source-availability obligations for the library it covers.
+  Invoking a scanner as a separate process in a container is the lightest form of
+  this, but it is not nothing, and the exact posture is a question for D09/counsel.
+- **Attribution in the product surface.** If Trivy is selected, GHSA's CC-BY-4.0
+  attribution has to appear wherever findings derived from that data are displayed or
+  exported — the dashboard, the management summary and the CSV/JSON export (W04).
+  That is a design requirement, not a footnote, and it should be written into W04
+  rather than discovered at pilot.
+- **Licence review as a recorded field.** Spec §8 requires a recorded licence review
+  per approved scanner combination. §6.2 is the content of that record for the
+  candidates; the pinning record (`D04_pinning_record.md`) is where it gets fixed to
+  the exact selected versions.
 ## 7. Dimension 4 — capacity
 
 The ceilings are already set by v1.3 and retained in v1.6: **30 minutes maximum for
@@ -217,7 +267,7 @@ hardware and workload described.
 | Coverage breadth | Broad across ecosystems; nothing in first-party code | Broad across languages; nothing about components |
 | Honest coverage denominator | Countable artefacts | Weakness classes per language — expensive to state truthfully |
 | Identity fit (measured) | 3/3 fields from tool output; 7/7 mutations retained | No field supplies `structural_context`; every substitute fails collision or stability |
-| Licensing | Apache-2.0 engine expected; aggregated advisory content carries attribution terms | LGPL-2.1 engine expected; rule content terms vary; Pro must be excluded |
+| Licensing (verified 2026-10-13) | Apache-2.0 engine, Apache-2.0 DB tooling; advisory content predominantly GHSA under CC-BY-4.0 — an **attribution obligation** in the product surface | LGPL-2.1 engine, but Semgrep's own rules are **internal-use-only and may not be made available as a service** — a blocker to resolve, not an obligation to discharge (§6.1) |
 | Capacity risk | Low | Moderate — memory and runtime scale with code × rules |
 | D10 freshness fit | Direct, dated | Indirect |
 | W03 closure determinism | High | Moderate |
@@ -244,6 +294,18 @@ The reasons, in order of weight:
 4. **Freshness is measurable** against D10, with a dated advisory database the spec
    already requires Seal to record.
 5. **Capacity risk is the lower of the two** against ceilings that are already fixed.
+6. **Licensing, now verified, points the same way.** Trivy's engine and DB tooling are
+   Apache-2.0 and its advisory content carries an attribution obligation Seal can
+   discharge in the UI and exports. Semgrep's engine is usable, but its rule corpus —
+   the thing that makes it valuable — is licensed for internal business purposes only
+   and explicitly not for making available to others as a service (§6.1). Option B
+   therefore needs either a commercial agreement or a Seal-authored rule corpus before
+   it can be a product capability at all.
+
+Reason 6 did not exist in revision 1, which carried an unverified licence table
+instead. It does not reverse the recommendation; it removes the main reason to doubt
+it, and it changes Option B from "more expensive" to "blocked until a licence
+question is answered".
 
 ### Residual risks this recommendation accepts
 
@@ -255,50 +317,71 @@ The reasons, in order of weight:
   exports, never as a clean result.
 - **An advisory-database mirror becomes an operational obligation** with an owner, a
   refresh cadence and a recorded digest — a standing D10/F01 cost, not a one-off.
-- **Attribution/licence conditions on aggregated advisory content** must be satisfied
-  wherever findings are displayed or exported.
+- **GHSA attribution becomes a W04 design requirement**, not a footnote: CC-BY-4.0
+  requires creator identification, a copyright notice, a notice referring to the
+  licence, and an indication of modifications, wherever findings derived from that
+  data are displayed or exported.
+- **Apache-2.0 notices must travel with the worker image** Seal distributes, and the
+  exact redistribution posture is a D09/counsel question, not an engineering one.
 - **A dependency finding is not a statement about exploitability.** `release.py`
   already refuses to let a model-level check support a production-control claim; the
   same discipline must reach the dashboard copy and the management summary.
 
 ## 11. What must be verified before §13 is signed
 
-None of these has been run. They are the pack's own outstanding work, and the first
-three are the ones v1.6 explicitly assigns to D04/F01/L01.
+Step 1 is **done**. Steps 2–6 are not, and four of them cannot be until a scanner may
+run. The scanner-free half of each has been prepared rather than left as a sentence.
 
-1. **Licences, current.** Retrieve and read the engine licence, the rule or advisory
-   content terms, and any registry terms of use for the exact pinned versions. Record
-   per spec §8.
-2. **Versions and digests, pinned.** Image digest, signature/provenance verification,
-   advisory DB (or rule) digest and timestamp, adapter/schema/transformation versions.
-   Confirm an unapproved combination is rejected.
-3. **Offline operation, proven.** The selected tool completes with no network access
-   and a pre-staged database or vendored rules.
-4. **Disabled classes, evidenced.** Configuration, secret and licence scanners off
-   (Option A); Pro engine, registry fetch and telemetry off (Option B) — each shown by
-   output or configuration, not asserted.
-5. **Capacity, measured.** One representative authorized artefact inside the 30-minute
-   (or 45-minute) ceiling under bounded worker resources, with stop and termination
-   targets met, hardware and workload described.
-6. **Fixture suitability, on real output.** Repeat §5 against genuine tool JSON rather
-   than simulated JSON, including the mutation set, before L04 claims its ≥95%.
+1. ~~**Licences, current.**~~ **Done 2026-10-13.** Engine, database-tooling, advisory-
+   content and rule licences retrieved from primary sources and read; see §6, which
+   now quotes and cites them. Re-check at pin time, as v1.6 requires. The one finding
+   that needs an answer from outside engineering is §6.1, which belongs to D09.
+2. **Versions and digests, pinned.** *Groundwork prepared:*
+   `D04_pinning_record.md` is the empty record, with spec §8's required fields, the
+   exact command that populates each one, and the rejection rule for an unapproved
+   combination. *Outstanding:* the values, which require pulling the selected
+   artefacts.
+3. **Offline operation, proven.** *Groundwork prepared:* `D04_pinning_record.md` §4
+   names the pre-staged artefacts per option (for Trivy: `trivy-db` and, for Java
+   artefacts, `trivy-java-db`, both OCI images), the download and air-gap flags, and
+   the self-hosted-registry route. *Outstanding:* running it.
+4. **Disabled classes, evidenced.** *Groundwork prepared:* `D04_pinning_record.md` §3
+   states the exact invocation per option and the evidence form each disabled class
+   must produce. *Outstanding:* the output.
+5. **Capacity, measured.** *Groundwork prepared:* the pass condition and the ceilings
+   are stated in §7 and restated as a measurement sheet in `D04_pinning_record.md` §5.
+   *Outstanding:* the measurements.
+6. **Fixture suitability, on real output.** *Groundwork prepared:*
+   `tools/d04_identity_probe.py` is §5's probe under version control, with its
+   simulated fixtures in `tools/fixtures/d04/` labelled as simulated and a
+   `--fixtures` flag so real tool JSON drops in without touching the harness.
+   *Outstanding:* real JSON, which requires a scanner run.
 
-Steps 3–6 involve running a scanner, which the current repository deliberately cannot
-do (`docs/BOUNDARY.md`). They are permitted laboratory preparation once this decision
-is recorded — not before.
+Steps 3–6 involve running a scanner, which this repository deliberately cannot do
+(`docs/BOUNDARY.md`). They are permitted laboratory preparation once this decision is
+recorded — not before.
 
 ## 12. If Semgrep is selected instead
 
 The selection is the authority's, and Option B is defensible — particularly if the
 pilot targets are first-party code with no meaningful dependency manifests, or if
 code-level weaknesses are the point of the pilot. In that case the decision should be
-recorded **with conditions**, because three things must come with it:
+recorded **with conditions**, because four things must come with it — and the first is
+new in revision 2 and is a precondition rather than a condition:
 
-1. A specified, versioned derivation for `structural_context` that is stable across
+1. **A resolved rule-provenance and licence position**, answered by D09/counsel, not
+   by engineering: either a commercial agreement with Semgrep, Inc. that covers
+   service use, or a decision to author and maintain Seal's own rule corpus in
+   Semgrep's syntax, with the coverage consequences of starting from zero rules stated
+   honestly in L05's manifest. Until one of those exists, Option B has no lawful rule
+   content to ship (§6.1).
+2. A specified, versioned derivation for `structural_context` that is stable across
    line shifts and distinct per finding, with its own benchmark against L04's ≥95%.
-2. Added scope and effort for per-language symbol extraction inside the trust
-   boundary, reflected in D03's schedule and D11's assurance funding.
-3. A reformulated freshness measure for D10 that does not pretend a rule revision is a
+3. Added scope and effort for per-language symbol extraction inside the trust
+   boundary — and, if condition 1 resolves to self-authored rules, for rule authoring
+   and maintenance as a standing workstream — reflected in D03's schedule and D11's
+   assurance funding.
+4. A reformulated freshness measure for D10 that does not pretend a rule revision is a
    dated advisory feed.
 
 ## 13. Decision record — unsigned
@@ -327,15 +410,23 @@ producing real output.
   (§8 untrusted-output and recorded-fields requirements; the 60/45/30-minute maxima;
   the Phase 0 confirmation list), and this repository's `src/seal/core/` with
   `docs/BOUNDARY.md` and `docs/TRACEABILITY.md`.
-- **Measured here.** §5 only, via a probe in a scratch directory against the real
-  `admission.py` and `identity.py`, on **simulated** tool output. The probe is not
-  part of the repository and is not a test; if these numbers are to be relied on, §11
-  step 6 repeats them on genuine output under version control.
+- **Measured here.** §5 only, against the real `admission.py` and `identity.py`, on
+  **simulated** tool output. As of revision 2 the probe is under version control at
+  `tools/d04_identity_probe.py` with its fixtures in `tools/fixtures/d04/`; the
+  fixtures are still simulated, and §11 step 6 remains outstanding until real tool
+  JSON replaces them.
+- **Retrieved and cited (revision 2).** The licence positions in §6, each from a
+  primary source on 2026-10-13: `aquasecurity/trivy` `LICENSE`,
+  `aquasecurity/trivy-db` `LICENSE`, `semgrep/semgrep` `LICENSE`,
+  `semgrep/semgrep-rules` `LICENSE` and the Semgrep Rules License v1.0 text at
+  semgrep.dev/legal/rules-license, `github/advisory-database` `LICENSE.md`,
+  docs.semgrep.dev/metrics, docs.semgrep.dev/semgrep-pro-vs-oss, and Trivy's
+  vulnerability-scanner, database-configuration and air-gap documentation.
 - **Not measured.** Every runtime, memory, detection-rate and false-positive
-  statement in §4, §6 and §7. Each is labelled as expectation.
-- **Tool facts carry a cutoff.** Licence, packaging and feature statements come from
-  model knowledge, not from retrieved documents, which is precisely why v1.6 requires
-  verification at pin time and why §11 exists.
+  statement in §4 and §7. Each is labelled as expectation.
+- **Legal reading is not legal advice.** §6.1 quotes a licence and states its plain
+  reading against Seal's service model. Confirming it is D09's work with counsel, and
+  this pack must not be cited as having settled it.
 - **This pack establishes no approval.** It is not a gate decision, not evidence of
   one, and not a substitute for the Product/security lead's recorded selection. It was
   drafted by an AI agent and requires competent human review before it informs any
