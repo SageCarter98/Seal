@@ -30,12 +30,12 @@ specification describes. It is not acceptance evidence for a production control.
 
 | | |
 |---|---|
-| Tests | **427**, all passing |
+| Tests | **603**, all passing |
 | Lint | `ruff check` and `ruff format --check` clean |
 | Runtime dependencies | **zero**, enforced by test |
 | Python | 3.10+ |
 
-The nine contract modules, and the requirement each one implements:
+The thirteen contract modules, and the requirement each one implements:
 
 ```
 src/seal/core/
@@ -46,6 +46,9 @@ src/seal/core/
   lifecycle.py       U05  work state, recurrence and dispositions on separate axes
   priority.py        U06  the SSVC-style tree, four dimensions kept apart
   audit.py       U07/U08  hash chain, anchor outbox, evidence custody
+  admission.py   U10/L01  bounded validation of untrusted adapter output
+  incident.py        U11  halt, hold, routing, undetermined legal duty
+  recovery.py        U12  idempotency, leases, retry rechecks, checkpoints
   integrity.py       C02  admission state, generation, stop budgets
   closure.py     U04/C01  proof review, then stale-intent finalization
   metrics.py     U13/C03  exposure measures with visible denominators
@@ -79,6 +82,22 @@ cancelled. Measured ceilings: no new egress after 5 s, workers terminated within
 30 s. Requests already transmitted cannot be recalled, so residual exposure is
 recorded rather than papered over.
 
+**Untrusted output is refused before it is parsed (L01/U10).** The worker→core
+boundary gates on byte length, then nesting depth scanned over raw bytes, then
+decode and parse, then schema version, and only then fields. A nesting bomb
+never reaches `json.loads`; a 12 MB document is rejected without being parsed.
+Fields are allowlisted, so there is no channel for an unexpected instruction to
+arrive on — which is what makes "a content field cannot invoke a tool" true
+structurally rather than by convention.
+
+**Seal cannot notify an external party, or decide a legal duty (U11).** A CERT
+or regulator notification is *prepared*, never sent, unless a named human
+authority is recorded against that specific party. `NotificationPlan` has no
+`sent` field to set. The carried-forward 24-hour reporting clock reports
+elapsed time and escalates, but never asserts a breach: `UNDETERMINED` is a
+distinct state from `NO_DUTY`, and a duty status with no named determiner
+collapses back to undetermined.
+
 **Accepted risk is still exposure (C03).** The verified closure rate is
 currently-verified Closed over *all* confirmed findings. Risk accepted and
 Suppressed stay in the denominator permanently and never enter the numerator;
@@ -90,7 +109,7 @@ change can reduce reported exposure. Zero confirmed findings reports
 
 ```bash
 python -m pip install -e ".[dev]"
-python -m pytest                       # 427 tests
+python -m pytest                       # 603 tests
 python -m pytest tests/test_boundary.py -v   # the purity boundary
 python -m ruff check src tests
 ```
