@@ -43,6 +43,13 @@ named authority signs §13. The pinning form is empty, and the probe's fixtures 
 simulated, because populating either requires running a scanner — which is exactly
 what this repository cannot do.
 
+The licence question that pack's §6.1 raises is drafted for counsel at
+[`docs/decisions/D09_counsel_instruction_tooling_licences.md`](decisions/D09_counsel_instruction_tooling_licences.md).
+That instruction is **unissued and no counsel is engaged**, so the Semgrep rule-licence
+position is Undetermined — in the sense `incident.DutyStatus.UNDETERMINED` means it,
+which is deliberately not a synonym for permitted. Until it is answered, no Semgrep
+rule content enters this repository, as a fixture or otherwise.
+
 The `release` module decides whether a claim's evidence supports it and who may accept it. It cannot accept anything: there is no `approve` or `sign_off` function, no module-level structure to write a decision into, and a test parses the module to keep it that way. Gate decisions stay where the PM Framework puts them.
 
 The `export` module decides which rows and columns may leave the system and how a cell or a display string is rendered. It cannot write a file, serve a download or learn who is asking — the role and the organization are inputs supplied by a caller, which is why a cross-tenant export attempt is testable here as a row whose organization differs from the authenticated one.

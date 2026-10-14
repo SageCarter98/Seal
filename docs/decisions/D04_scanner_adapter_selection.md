@@ -191,7 +191,10 @@ Seal is a multi-tenant service that assesses other organisations' assets and sho
 them the findings. On the face of the text, shipping Semgrep's community rules as
 part of that service is the thing this licence excludes. That is a licensing question
 with a plain reading, not a settled legal conclusion — **it belongs to the D09
-regulatory/legal workstream to confirm**, and this pack does not decide it.
+regulatory/legal workstream to confirm**, and this pack does not decide it. The
+question is drafted for counsel at
+[`D09_counsel_instruction_tooling_licences.md`](D09_counsel_instruction_tooling_licences.md),
+as Q1 of seven; that instruction is itself unissued, and no counsel is engaged.
 
 What it does mean for D04 is concrete: **Option B cannot assume the community rule
 corpus.** Either a commercial agreement with Semgrep, Inc. covers service use, or
