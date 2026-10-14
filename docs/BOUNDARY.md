@@ -43,6 +43,16 @@ named authority signs §13. The pinning form is empty, and the probe's fixtures 
 simulated, because populating either requires running a scanner — which is exactly
 what this repository cannot do.
 
+D05's readiness pack is at
+[`docs/decisions/D05_baseline_readiness.md`](decisions/D05_baseline_readiness.md),
+with two drafted artefacts under `docs/requirements/`: a
+[prohibited-capability specification](requirements/PROHIBITED_CAPABILITIES.md) and the
+[T01–T14 acceptance mapping](requirements/ACCEPTANCE_T01_T14.md). **Read the
+prohibited-capability list against this file, not as part of it** — this document says
+"not built yet, and here is the blocking decision"; that one says "must never exist, or
+only under one named authorisation". D05 itself is blocked: there is no threat model,
+and the pack says so rather than implying these documents add up to one.
+
 The licence question that pack's §6.1 raises is drafted for counsel at
 [`docs/decisions/D09_counsel_instruction_tooling_licences.md`](decisions/D09_counsel_instruction_tooling_licences.md).
 That instruction is **unissued and no counsel is engaged**, so the Semgrep rule-licence
