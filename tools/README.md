@@ -41,3 +41,20 @@ at the same time.
 `MANIFEST.json` is mandatory and its `provenance` must be `simulated` or `real`. The
 harness refuses to run without it — an unlabelled fixture is how a hand-written number
 ends up quoted as a measurement.
+
+## `d06_egress_probe.py`
+
+Asks what information an egress enforcement mechanism must be able to observe, by
+running the real `egress.py` decision with only what each candidate mechanism sees per
+request. It is the evidence behind section 3 of
+[`../docs/decisions/D06_egress_boundary.md`](../docs/decisions/D06_egress_boundary.md).
+
+```
+python tools/d06_egress_probe.py
+```
+
+Needs no fixtures: the inputs are constructed in the file, because the question is
+about the decision's required inputs rather than about any tool's output. It asserts
+nothing and emits no pass/fail, for the same reason as the D04 probe — it establishes
+what the decision needs, not that a mechanism works, which needs a running platform
+nobody has authorised.
