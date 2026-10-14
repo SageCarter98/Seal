@@ -23,7 +23,7 @@ reconciliation), and it names what only the authority can decide.
 | Requirement IDs | **Substantially in place** | U01–U14, C01–C03, L01 and W04 are mapped to modules and tests in `docs/TRACEABILITY.md`, which is current as of 705 tests |
 | Prohibited capabilities | **Drafted here** | `docs/requirements/PROHIBITED_CAPABILITIES.md` — needs ratification, see §5 |
 | Acceptance cases | **Drafted here, mostly unevidenced** | `docs/requirements/ACCEPTANCE_T01_T14.md` — the cases exist in the baseline; almost none has evidence, and the thresholds need approval |
-| Threat model | **Absent. No basis at all** | §4. This is the element that blocks D05, and nothing in the repository or the document set is a threat model |
+| Threat model | **Drafted after this pack, unapproved** | `docs/requirements/THREAT_MODEL.md` — 16 threats, 10 trust boundaries, control state per threat. §4 records what the draft does and does not settle |
 | Interface contracts | **Partially in place** | The adapter result contract is specified and enforced in `admission.py`; export and release contracts are modelled. No HTTP API contract exists, because no API exists |
 | Fingerprint specification | **In place** | `identity.py`: per-family tuples, `FINGERPRINT_VERSION`, the volatile-field exclusion, organisation and target hashed into identity |
 | Priority specification | **Structure in place, numbers not** | `priority.py` models the dimensions, floors and unknown-handling; the numeric thresholds are explicitly D10 policy candidates, not D05's to set |
@@ -151,14 +151,37 @@ threat model:
 - The baseline's §12 covers ethical, legal and governance conditions, and §12.1–12.3
   cover the regulatory gate, out-of-scope discovery and active-compromise escalation.
 
-What is missing is the systematic pass: for each asset and trust boundary, which
+What was missing was the systematic pass: for each asset and trust boundary, which
 threats apply, which are mitigated by a control that exists, which are accepted, and
-which are deferred to a package that has not been built. That document is draftable
-from material already in hand — the spec's trust boundaries, the modules' own
-reasoning, and the prohibited-capability list in §5 — and it would serve both D05 and
-G2.06. **It is the obvious next piece of work, and it is not in this pack**, because
-a threat model assembled as an afterthought to something else is how threat models
-become decoration.
+which are deferred to a package that has not been built.
+
+**That pass is now drafted, separately and deliberately so**, at
+`docs/requirements/THREAT_MODEL.md` — 7 assets, 8 actors, 10 trust boundaries, 16
+threats, each carrying a control state (modelled / designed / undecided / accepted)
+rather than an unqualified "mitigated". It was drafted as its own piece of work rather
+than appended to this pack, because a threat model assembled as an afterthought to
+something else is how threat models become decoration.
+
+**What the draft settles and what it does not.** It identifies the abuse paths and
+says what stands behind each, which is what D05 needs in order to have something to
+baseline. It is not assurance: no negative test has run, no deployment exists to test,
+and the same agent drafted the decision core, this pack and that model — which is the
+conflict H01's independent reviewer exists to resolve, and the draft says so in its
+own §8. Two consequences for D05:
+
+- **D05 can now consider this element, but not close it unexamined.** An unapproved
+  draft is an input to the baseline decision, not evidence of one.
+- **G2.06 stays open regardless.** That item is "threat model *and* privacy
+  assessment", and the privacy half is D08's work: the PIA, data inventory and
+  retention/hold/disposal map. None of it exists, and the threat model deliberately
+  does not pretend to cover it.
+
+The draft also surfaced a specification gap rather than an implementation one, which
+is worth reading before §6: in operated-service mode **the Seal operator is a
+privileged cross-tenant insider, and nothing in the current design addresses
+operator-level abuse** (THREAT_MODEL §5, T14). Every tenant control modelled so far
+protects tenants from each other, not from whoever runs the platform. That makes §6's
+deployment-model decision more urgent, not less.
 
 ## 5. Prohibited capabilities: a distinction worth not blurring
 
@@ -210,8 +233,8 @@ Six items. None of them is a gap in research; each is a choice.
 
 - **Not the baselined PRD or architecture.** It is the readiness assessment and the
   reconciliation, plus two drafted artefacts that need ratification.
-- **Not a threat model**, and it says so loudly in §4 rather than implying the
-  existing documents add up to one.
+- **Not itself the threat model.** That is a separate drafted document, also
+  unapproved, and §4 states what it settles and what it leaves open.
 - **Not an approval.** D05 stays Unconfirmed / Blocked. F01 stays blocked behind D03
   and D05.
 - **Not a claim that the core's depth is progress toward delivery.** §3.4 is there to
