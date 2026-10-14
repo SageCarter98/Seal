@@ -60,7 +60,29 @@ because there is nothing running to test — and it is not independent review, w
 H01's, since the same agent wrote the code it assesses. It also covers only the threat
 half of SDLC G2.06; the privacy assessment is D08's and does not exist.
 
-The licence question that pack's §6.1 raises is drafted for counsel at
+The dashboard row above has a drafted
+[frontend design specification](requirements/FRONTEND_DESIGN_SPEC.md), also unratified.
+It is a design proposal for W02/W04 — screens, states, status vocabulary, accessibility
+targets and the display obligations the decision core imposes — and it is not an
+implementation, a prototype or an accessibility assessment. No screen has been
+rendered, because there is nothing to render; its §13 says what was and was not
+checked, and its §14 lists the nine choices that belong to a named authority rather
+than to a draft.
+
+D06's pack for the enforced outbound boundary is at
+[`docs/decisions/D06_egress_boundary.md`](decisions/D06_egress_boundary.md), and its
+§12 is unsigned, so the outbound row above stays blocked. One thing in it is measured
+rather than argued: running the real `egress` decision with only what each candidate
+mechanism can observe, a boundary that sees just host and port denies every request
+outright, because path is a required input and the decision is deny-by-default. A
+TLS-tunnelling forward proxy and a network-layer allowlist both see only host:port for
+an HTTPS target, so neither can operate this boundary at all — not less safely, but at
+all. Its §3 names the alternative honestly: the authority could instead approve
+host-level scope, which discards the `approved_paths`, `excluded_paths` and
+ambiguous-encoding checks that spec §4 requires. That is a choice for the security
+and platform leads, and it has not been made.
+
+The licence question that D05's pack §6.1 raises is drafted for counsel at
 [`docs/decisions/D09_counsel_instruction_tooling_licences.md`](decisions/D09_counsel_instruction_tooling_licences.md).
 That instruction is **unissued and no counsel is engaged**, so the Semgrep rule-licence
 position is Undetermined — in the sense `incident.DutyStatus.UNDETERMINED` means it,
