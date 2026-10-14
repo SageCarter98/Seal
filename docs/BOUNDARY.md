@@ -50,8 +50,15 @@ with two drafted artefacts under `docs/requirements/`: a
 [T01–T14 acceptance mapping](requirements/ACCEPTANCE_T01_T14.md). **Read the
 prohibited-capability list against this file, not as part of it** — this document says
 "not built yet, and here is the blocking decision"; that one says "must never exist, or
-only under one named authorisation". D05 itself is blocked: there is no threat model,
-and the pack says so rather than implying these documents add up to one.
+only under one named authorisation".
+
+A system [threat model](requirements/THREAT_MODEL.md) is drafted alongside them, also
+unapproved. Every threat in it carries a control state, because most of Seal's
+controls are decisions rather than deployed mechanisms, and its top residual risk is
+exactly that. Two things it is not: it is not assurance — no negative test has run,
+because there is nothing running to test — and it is not independent review, which is
+H01's, since the same agent wrote the code it assesses. It also covers only the threat
+half of SDLC G2.06; the privacy assessment is D08's and does not exist.
 
 The licence question that pack's §6.1 raises is drafted for counsel at
 [`docs/decisions/D09_counsel_instruction_tooling_licences.md`](decisions/D09_counsel_instruction_tooling_licences.md).
