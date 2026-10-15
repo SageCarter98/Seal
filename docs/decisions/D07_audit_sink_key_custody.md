@@ -13,7 +13,7 @@ decision core cannot express at all.
 | Also to resolve here | Appendix E.4's audit implementation list: restricted procedure interface, revoked public execution, ownership out of runtime roles, transaction boundaries and outbox/retry handling |
 | Blocks | F07, and with it every High/Critical closure, since `Closure awaiting anchor` cannot finalise without a verified receipt |
 | Drafted | 2026-10-15, by Claude Opus 5 at the owner's instruction |
-| Status | **Unconfirmed / Blocked. §13's decision record is unsigned.** |
+| Status | **Unconfirmed / Blocked. §14's decision record is unsigned.** |
 
 ## 1. The decision as the documents state it
 
@@ -189,7 +189,7 @@ This is not a defect to fix in this pack. It is **the modelling consequence of D
 being unmade**: the core cannot name a custody arrangement nobody has selected. But it
 does mean the decision must settle rotation semantics *before* F07 writes the receipt
 type, because adding key identity afterwards changes a persisted record and every
-historical verification path. §9 Q3 carries it.
+historical verification path. §13 Q3 carries it.
 
 ## 5. Element 1 — independent administration
 
@@ -237,7 +237,7 @@ and the pack proposes writing nothing else to the sink for exactly this reason.
 
 It is not, however, free of disclosure: the sink's administrator learns which tenants
 exist, how many audit events each generates and when. That is a minimisation question
-for D08's data inventory rather than a blocker here, and §9 Q5 refers it.
+for D08's data inventory rather than a blocker here, and §13 Q5 refers it.
 
 ## 7. Element 3 — signing and key rotation
 
@@ -254,7 +254,7 @@ Unmodelled today (§4). The decision must fix at least:
 **Proposed:** a managed KMS key that Seal's runtime may invoke for signing but cannot
 export, rotated on a fixed schedule with the retired public key retained indefinitely
 for historical verification, and `key_id` added to `AnchorReceipt` so a head is always
-verifiable against the key in force when it was signed. That is a proposal. §13 decides.
+verifiable against the key in force when it was signed. That is a proposal. §14 decides.
 
 ## 8. Element 4 — anchor acknowledgment
 
@@ -334,7 +334,7 @@ record.
 
 This is the pack's reading. The platform lead and assurance reviewer decide.
 
-## 12. What must be verified before §13 is signed
+## 12. What must be verified before §14 is signed
 
 None of this is verifiable in this repository, and a local mock is excluded by the
 decision's own wording.
@@ -353,7 +353,22 @@ decision's own wording.
 6. The administration separation at §5 is confirmed against a named role list by the
    assurance reviewer, not inferred from account structure.
 
-## 13. Decision record — unsigned
+## 13. Open questions for the deciding authorities
+
+Numbered so the sections above can refer to one question rather than restate it.
+Each belongs to the platform lead with the assurance reviewer, except where noted.
+
+| # | Question | Raised in |
+|---|---|---|
+| Q1 | Which sink option — A (object storage, retention lock), B (managed write-once log) or C (verifiable/transparency log)? §11 proposes A on proportionality grounds; C is defensible if the assurance burden is judged worth it | §10, §11 |
+| Q2 | Where does the signing key live, and can Seal's runtime use it without being able to export it? An exportable key makes every anchor forgeable by one compromised host | §7 |
+| Q3 | Rotation interval, and whether a head signed by a retired key stays verifiable. This decides whether `key_id` is added to `AnchorReceipt`, which cannot be deferred: adding key identity after F07 writes the type migrates a persisted record | §4, §7 |
+| Q4 | Who holds the verification public key and issues receipts? If Seal holds it, the "independent" verification is circular | §5, §8 |
+| Q5 | The sink's administrator learns which tenants exist, how many audit events each generates and when. Does that disclosure need a contractual term, a privacy-notice entry, or both? D08's §14 Q4 asks the same question from the privacy side, and the two answers must match | §6 |
+| Q6 | `IMMEDIATE_ANCHOR_KINDS` includes `INTEGRITY_STATE`, which baseline §9.1 does not list. Ratify the strengthening or strike it — but decide it rather than inherit it | §2 |
+| Q7 | A receipt naming a head the ledger never produced is refused today. Is that an integrity incident or a transient error? §8 proposes incident, because it means the sink holds something Seal did not write | §8 |
+| Q8 | What retention period is set at the sink? Anchors contain no content and never need disposal, so an indefinite period is available in a way it is not for evidence — but it should be chosen, not defaulted | §6 |
+## 14. Decision record — unsigned
 
 | Field | Value |
 |---|---|
@@ -363,6 +378,7 @@ decision's own wording.
 | Rotation interval and pre-rotation verification policy | |
 | Receipt issuance credential holder | |
 | Administration separation confirmed (§5) | |
+| §13's open questions answered and recorded | |
 | §12 verification completed and evidenced | |
 | Decided by — platform lead (named) | |
 | Assurance reviewer (named) | |
@@ -372,7 +388,7 @@ decision's own wording.
 Until this is completed, F07 stays blocked, no anchor claim may be made, and
 `Closure awaiting anchor` is where every High and Critical finding stops.
 
-## 14. Provenance and limits
+## 15. Provenance and limits
 
 - **Drafted by an AI agent**, requiring competent human review. The same agent wrote
   the decision core this pack measures, so §3's probe is not independent verification

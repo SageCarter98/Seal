@@ -84,7 +84,7 @@ and platform leads, and it has not been made.
 
 D07's pack for the external audit sink and key custody is at
 [`docs/decisions/D07_audit_sink_key_custody.md`](decisions/D07_audit_sink_key_custody.md),
-unsigned at its §13, so the audit-sink row above stays blocked. Its measured part
+unsigned at its §14, so the audit-sink row above stays blocked. Its measured part
 concerns what a sink must return: `record_receipt` and `closure.finalize` both
 reconcile against the exact `(sequence, head)` the ledger produced and both refuse an
 unverified receipt, so a sink that merely acknowledges a write leaves every High and
