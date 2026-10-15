@@ -318,7 +318,7 @@ pack approves nothing.
 | Q1 | Extend D09's instruction to carry the Act 843 determinations, or raise a separate engagement? (§11 proposes extending) |
 | Q2 | `manager` is person-cleared in the core and is not a baseline §5 role. Remove it, or add it to §5? |
 | Q3 | Where does the retention floor live — core, storage layer, or process? (§3 proposes the core) |
-| Q4 | Does the sink operator's visibility of tenant identity and event rate (§6) require its own disclosure or contractual term? |
+| Q4 | Does the sink operator's visibility of tenant identity and event rate (§6) require its own disclosure or contractual term? D07's §13 Q5 is the same question from the platform side; the answers must match |
 | Q5 | Is the audit chain's attribution of actions to named people in scope for data-subject correction rights, given it is append-only and retention-locked? |
 | Q6 | What is the review cadence for "only while necessary" on raw evidence — §11.1 says at closure, Gate 6 and at least annually; is that adopted as written? |
 
