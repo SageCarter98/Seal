@@ -82,6 +82,18 @@ host-level scope, which discards the `approved_paths`, `excluded_paths` and
 ambiguous-encoding checks that spec §4 requires. That is a choice for the security
 and platform leads, and it has not been made.
 
+D07's pack for the external audit sink and key custody is at
+[`docs/decisions/D07_audit_sink_key_custody.md`](decisions/D07_audit_sink_key_custody.md),
+unsigned at its §13, so the audit-sink row above stays blocked. Its measured part
+concerns what a sink must return: `record_receipt` and `closure.finalize` both
+reconcile against the exact `(sequence, head)` the ledger produced and both refuse an
+unverified receipt, so a sink that merely acknowledges a write leaves every High and
+Critical finding in `Closure awaiting anchor` permanently. Sixteen minutes of sink
+unavailability also makes integrity Untrusted and stops assessment, which makes the
+sink's availability a safety parameter rather than an operations detail. The pack
+names one thing the core cannot express at all: `AnchorReceipt` carries no key
+identity, so rotation semantics are undefined until D07 fixes them.
+
 The licence question that D05's pack §6.1 raises is drafted for counsel at
 [`docs/decisions/D09_counsel_instruction_tooling_licences.md`](decisions/D09_counsel_instruction_tooling_licences.md).
 That instruction is **unissued and no counsel is engaged**, so the Semgrep rule-licence

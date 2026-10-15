@@ -59,6 +59,29 @@ nothing and emits no pass/fail, for the same reason as the D04 probe — it esta
 what the decision needs, not that a mechanism works, which needs a running platform
 nobody has authorised.
 
+## `d07_anchor_probe.py`
+
+Asks what an external audit sink must be able to return, by running the real
+`audit.py`, `integrity.py` and `closure.py` decisions against the receipt each
+candidate sink could actually produce. It is the evidence behind sections 3 and 4 of
+[`../docs/decisions/D07_audit_sink_key_custody.md`](../docs/decisions/D07_audit_sink_key_custody.md).
+
+```
+python tools/d07_anchor_probe.py
+```
+
+Needs no fixtures, for the same reason as the D06 probe, and asserts nothing. Its
+section 4 prints the fields `AnchorReceipt` actually carries rather than describing
+them, because the point being made is an absence — there is no key identity among
+them — and an absence stated by a document is easier to doubt than one printed by the
+type itself.
+
+**It cannot demonstrate anchoring.** `AnchorReceipt.verified` is a trusted input the
+decision core deliberately does not establish, and D07's own wording excludes "any
+claim of external trust from a local mock". The probe establishes what a receipt must
+contain for the decision to proceed; whether a real sink can produce one is §12 of
+that pack, and needs a sink nobody has selected.
+
 ## `d08_evidence_probe.py`
 
 Asks what the decision core already decides about personal data and where it has no
