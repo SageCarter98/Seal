@@ -58,3 +58,26 @@ about the decision's required inputs rather than about any tool's output. It ass
 nothing and emits no pass/fail, for the same reason as the D04 probe — it establishes
 what the decision needs, not that a mechanism works, which needs a running platform
 nobody has authorised.
+
+## `d08_evidence_probe.py`
+
+Asks what the decision core already decides about personal data and where it has no
+opinion, by running the real `EvidenceRecord.may_dispose` and `export.may_export`. It
+is the evidence behind sections 3 and 4 of
+[`../docs/decisions/D08_privacy_evidence_handling.md`](../docs/decisions/D08_privacy_evidence_handling.md).
+
+```
+python tools/d08_evidence_probe.py
+```
+
+Needs no fixtures and asserts nothing. Its two findings are absences rather than
+failures, which is why they are printed rather than described: `may_dispose` permits
+disposal one second after collection, because it has no concept of elapsed time and
+the retention floors in baseline §11.1 have no enforcement point; and not one of the
+eight baseline §5 role identifiers is recognised by `may_export`, which enforces a
+different five.
+
+**It is not a privacy assessment and cannot become one.** `sanitized` is a recorded
+flag the core cannot verify, no real personal data exists in this repository to
+inventory, and the determinations D08 needs are a named privacy reviewer's, with six
+of them waiting on counsel.

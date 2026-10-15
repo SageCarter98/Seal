@@ -89,6 +89,17 @@ position is Undetermined — in the sense `incident.DutyStatus.UNDETERMINED` mea
 which is deliberately not a synonym for permitted. Until it is answered, no Semgrep
 rule content enters this repository, as a fixture or otherwise.
 
+D08's pack for privacy and evidence handling is at
+[`docs/decisions/D08_privacy_evidence_handling.md`](decisions/D08_privacy_evidence_handling.md),
+unsigned at its §15. **It is not the privacy impact assessment** — it is a pack that
+prepares one and reports why most of it cannot be written yet: six of the fourteen
+contents baseline §11.1 requires need counsel, and D09's instruction is unissued. Two
+of its findings are measured absences rather than arguments. `may_dispose` has no
+concept of elapsed time, so §11.1's retention floors have no enforcement point and
+evidence may be disposed one second after collection. And not one of the eight
+baseline §5 role identifiers is recognised by `may_export`, which enforces a different
+five — the gap the frontend spec raised as its Q1, reached from the access side.
+
 The `release` module decides whether a claim's evidence supports it and who may accept it. It cannot accept anything: there is no `approve` or `sign_off` function, no module-level structure to write a decision into, and a test parses the module to keep it that way. Gate decisions stay where the PM Framework puts them.
 
 The `export` module decides which rows and columns may leave the system and how a cell or a display string is rendered. It cannot write a file, serve a download or learn who is asking — the role and the organization are inputs supplied by a caller, which is why a cross-tenant export attempt is testable here as a row whose organization differs from the authenticated one.
