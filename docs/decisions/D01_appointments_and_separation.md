@@ -232,7 +232,7 @@ approval step inside the loop adds anything the disclosure does not.
 > option 2 below. It does not make the sibling relation immaterial and this pack does not
 > record it as immaterial — it records that the Project Authority accepted a known,
 > disclosed conflict with compensating measures, which is the one §12.2-compliant way to
-> keep it. §9.8 carries the proposed terms; §12 is where they are adopted.
+> keep it. **The terms were adopted the same day and are in force at §12.1.**
 
 **With the reviewer question judged, one question remained and it is now decided: who
 holds acceptance.** The three closings, with the one taken marked:
@@ -566,12 +566,13 @@ recommendation in §9 is taken, D11 inherits two concrete line items from it.
    are waiting or lifting protection, and §9.5 is where that gap is recorded.
 7. **Hand D11 one line item**: deputy-reviewer effort. The platform cost the first
    draft listed beside it was paid in disclosure instead of money (§4).
-8. **Adopt a compensating arrangement for the Gate 4 acceptance authority, in these
-   terms.** The Project Authority chose §2's option 2 over this pack's recommendation, so
-   the pack's job is now to make that choice recordable rather than to re-argue it. §3.3
-   requires a named reviewer, the evidence to be checked and a time limit; the rest of
-   these terms exist because the signature will be a related party's and the only
-   available substitute for independence is after-the-fact checkability.
+8. ~~Adopt a compensating arrangement for the Gate 4 acceptance authority.~~ **Adopted
+   2026-10-18 — the terms are in force at §12.1 and reproduced there.** They are kept
+   below as the recommendation they were, so the pack still shows what was proposed
+   against what was adopted. §3.3 requires a named reviewer, the evidence to be checked
+   and a time limit; the rest of these terms exist because the signature will be a
+   related party's and the only available substitute for independence is after-the-fact
+   checkability.
 
    | Term | Proposed |
    |---|---|
@@ -584,9 +585,9 @@ recommendation in §9 is taken, D11 inherits two concrete line items from it.
    | **§3.3 Executive Authority approval** | recorded as a **self-approval**: the Executive Authority chair, the Project Authority, the sponsor, the project manager and the author are one person, and §12 must say so in those words rather than presenting the step as independent sign-off |
    | **Standing statement in the record** | independent assurance in §19.1's sense is absent for the acceptance control, and present for no control other than through the public visibility of the reviewer's work (§2) |
 
-   Adopt, amend or replace these in §12. What the pack cannot do is let the arrangement
-   exist as an intention: §3.3's clause is satisfied by recorded terms, and an unrecorded
-   compensating arrangement is the same thing as none.
+   Adopted unamended by the Project Authority on 2026-10-18 (§12.1). What the pack
+   cannot do is let the arrangement exist as an intention: §3.3's clause is satisfied by
+   recorded terms, and an unrecorded compensating arrangement is the same thing as none.
 
 This is a recommendation from a decision pack. It is not a decision, and the Project
 Authority may reject any part of it.
@@ -617,9 +618,10 @@ Authority may reject any part of it.
    recommendation both recorded (§2). **Decided for acceptance, the same day:** Milton
    Kenny Adedeme is the owner's brother, holds acceptance from Gate 4, and the Project
    Authority accepted that relation under a compensating arrangement rather than judging
-   it immaterial (§2). **Outstanding:** adopting the terms. §9.8 proposes them; §12 is
-   where they become the arrangement §3.3 requires, including the Executive Authority
-   step recorded as a self-approval.
+   it immaterial (§2). **Terms adopted the same day** and in force at
+   §12.1, including the Executive Authority step recorded as a self-approval.
+   **Outstanding:** the appointees' own acceptance of their roles (§10.2), and the
+   reviewer's scope and period, which the arrangement does not cover.
 5. Check the D01 row and §15.3 against the approved `.docx` directly. The quotations here
    come from a stdlib text extraction of `Seal_Integrated_Baseline_v1_6.docx`; headings
    and paragraph text extract reliably, but a table-formatting difference would not be
@@ -647,8 +649,10 @@ Authority may reject any part of it.
    extended family, judged non-material by the Project Authority and continuing as
    reviewer; Milton is the owner's brother. The acceptance row is decided the same
    day: Milton holds it from Gate 4 under a compensating arrangement, accepted rather
-   than judged immaterial. What stays open is the wording of that arrangement (§9.8's
-   proposed terms) and nothing else in this question.**
+   than judged immaterial, with terms adopted unamended and in force at §12.1. **This
+   question is closed.** What it leaves behind is not a question but a dependency: the
+   arrangement expires, and §12.1's expiry date is the next time this reasoning has to
+   be done again.**
 3. Is the reviewer and the acceptance authority being the same person accepted for a
    Class A / Class 3 project, given §3.3 permits it and §5's second point records
    what it concentrates? **Answered 2026-10-18: accepted until Gate 4, then separated —
@@ -676,6 +680,43 @@ Authority may reject any part of it.
     deputy is indistinguishable from a second unconditional approver.
 
 ## 12. Decision record — unsigned
+
+### 12.1 Compensating arrangement for the Gate 4 acceptance authority — adopted
+
+**Adopted 2026-10-18 by Freston Kenny Adedeme as Project Authority, on his instruction
+recorded in that day's working session, under PM Framework v1.3 §3.3's
+compensating-assurance clause.** The terms are reproduced here in force rather than
+referenced, so the arrangement can be read without reconstructing it from a
+recommendation.
+
+| Term | Adopted |
+|---|---|
+| **Named acceptance authority** | Milton Kenny Adedeme (`MiltonBello15`), brother of the author, from Gate 4 |
+| **Evidence he must check before accepting** | the T01–T14 acceptance mapping; that every claim in the release pack is locatable, digest-bound, verified and same-revision; that no tracker item supporting the release reads Complete without a specific locatable reference; that CI was green on the exact accepted revision; and that an approving review from the independent reviewer exists for every change in the release |
+| **What he may refuse** | acceptance, on any unmet acceptance criterion, with the refusal recorded in the decision record and the tracker before any further work on that release |
+| **If the Project Authority disagrees with a refusal** | the override is recorded as an override, naming the criterion overridden and the reason. It escalates to nobody, because §3.4 puts the Executive Authority chair in the same person; the compensating measure is publication of the disagreement, not its resolution |
+| **What must escalate past him** | anything with a legal or regulatory consequence (D09/H03 — no autonomous regulatory filing; the duty determination is counsel's); any conflict beyond the disclosed family relation; and anything §3.3 forbids a compensating arrangement from waiving — legal, security, privacy or financial controls |
+| **Expiry** | **2027-10-18**, or the Gate 5 continuation decision, whichever is earlier. Re-approval required; it does not roll over |
+| **§3.3 Executive Authority approval** | **Recorded as a self-approval.** The Executive Authority chair, Project Authority, sponsor, project manager and author of every change are one person (§3.4). This step adds no independent scrutiny and is recorded so that nobody reads it as though it did |
+| **Standing statement** | Independent assurance in §19.1's sense is absent for the acceptance control. It is absent for every other control too, except insofar as the independent reviewer's work is publicly visible and therefore auditable after the fact (§2) |
+
+**What adopting this does and does not settle.** It satisfies §3.3's requirement that a
+compensating arrangement exist in recorded terms with a named reviewer, stated evidence
+and a time limit — the thing that, left as an intention, would have been worth nothing.
+It does not complete D01: the table below still has no names against its rows, no review
+scope, no review period and no deputy trigger, and neither appointee has accepted their
+appointment (§10.2). And it does not convert a self-approval into an approval.
+
+**On how this adoption is recorded.** The text above was written by the drafter from the
+Project Authority's instruction, in the same session and on the same day. It becomes part
+of the project record the way every other change here does — reviewed by the independent
+reviewer and merged under branch protection that binds administrators (§4). That merge is
+the signature ceremony available to this project, and it is the first use of the control
+this pack describes. No agent, document or tool in this repository can sign on anyone's
+behalf, and this section is a transcription of a decision, not a substitute for the
+person making it.
+
+### 12.2 The appointment record
 
 | Field | Value |
 |---|---|
