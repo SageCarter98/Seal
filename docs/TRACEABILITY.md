@@ -74,6 +74,25 @@ asserts each one:
 | W04 | Role-based dashboard, evidence views, management summary and tenant-filtered JSON/CSV export | **Decision half delivered**: `export` decides which rows may leave (tenant from authenticated membership, never from a request parameter), which columns may leave (allowlists that exclude person fields unless the role permits them, and have no column raw content could occupy), and how a value from untrusted adapter output is rendered (formula guard, uniform RFC 4180 quoting, display escaping, control characters refused). The dashboard, role session, HTTP response and signed download are W04's platform half and are **not started** — they depend on W01–W03 and F08. |
 | F02–F08, L02–L05, W01–W03, W05 | — | Not started. The decision contracts several of them depend on are modelled here as reviewable design, which is what spec §5 permits as "fixtures… for permitted design work". |
 
+## Obligations with named owners
+
+Some decisions create an obligation that no module in this repository can discharge,
+because the thing that must honour it is not built yet. They are easy to lose: they read
+like details inside a decision pack, they cannot fail a test, and the package that
+inherits them does not exist to carry a TODO. This register exists so they survive the
+gap between a decision and its implementation.
+
+| Obligation | Source | Who must honour it | Owner |
+|---|---|---|---|
+| `urgent_validation` must be an **entry condition** into the validation queue in its own right, not a sort key applied after the action. A queue that reads `action` first and the flag second does not implement "enter urgent validation immediately" | D10 §11 Q6, answered by the owner 2026-10-18: the flag satisfies the requirement and the tree does not re-route | W02 | **Milton (`MiltonBello15`)**, named by the owner 2026-10-18 |
+| Source and environment-adjusted severity must be shown as **separate fields**. `priority.py` keeps the source reading intact because `Severity` is frozen and the two are separate instances, but a display cannot recover it from the outcome alone | W01's first acceptance line, measured in `d10_priority_probe.py` §1 | W01, W04 | *(unassigned)* |
+| Acknowledgement targets are **calendar** days, so a target can fall on a weekend — a Friday Attend finding comes due Saturday. Whoever staffs acknowledgement either covers weekends or misses the target on record | D10 §11 Q1, answered by the owner 2026-10-18 | Operations, via W02 | *(unassigned)* |
+| A scanner advisory DB needs its **own** freshness limit; the 48-hour limit bounds the EPSS reading only | D10 §11 Q8, answered by the owner 2026-10-18 | D04, then L01 | *(unassigned)* |
+
+An owner here is the person accountable for the obligation being honoured when the
+package is built. It is **not** a D01 appointment: D01's roles are recorded in
+`decisions/D01_appointments_and_separation.md` §12, which is unsigned.
+
 ## Design decisions taken here, and why
 
 Seven places where the specification's intent needed a concrete choice. Each is

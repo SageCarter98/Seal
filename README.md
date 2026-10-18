@@ -139,6 +139,22 @@ Class A / Software Class 3** (Stage Plan D02 — not yet signed). Gate status
 lives in the `pm-sdlc-tracker` database for this project, not in this
 repository, and no code change here can record a gate decision.
 
+Every change reaches `main` through a pull request approved by someone other
+than its author — fourteen of fourteen, by practice, and **now by enforcement
+as well**. While this repository was private, branch protection could not be
+enabled at all (`403 Upgrade to GitHub Pro or make this repository public`); it
+was made public on 2026-10-18 at the owner's direction and protection was
+configured the same day: one approving review, the four CI checks required,
+stale reviews dismissed, no force-push or deletion, and the rules binding the
+owner's admin account — so nobody here can merge their own work unreviewed.
+
+The appointments behind that review are still unrecorded: the reviewer has no
+stated scope or review period, and there is no deputy, because those are D01's
+decisions and D01 is unsigned.
+[`docs/decisions/D01_appointments_and_separation.md`](docs/decisions/D01_appointments_and_separation.md)
+measures all of it; `tools/d01_review_separation_probe.py` is where the numbers
+come from.
+
 ## Documents
 
 | Document | Version | Location |
@@ -146,5 +162,5 @@ repository, and no code change here can record a gate decision.
 | Integrated Concept and Implementation Baseline | v1.6 | `Seal_Integrated_Baseline_v1_6.docx` |
 | Integrated Engineering Specification | v1.6 | `Seal_Engineering_Specification_v1_6.docx` |
 | Stage Implementation Plan | v1.2 | inside `Seal_All_Documents_2026_09_10.zip` |
-| Governing PM / SDLC frameworks | v1.0 / v1.1 | inside the same ZIP |
+| Governing PM / SDLC frameworks | v1.0 / v1.1 | inside the same ZIP — superseded; the controlled versions are v1.3 (PM) and v1.4 (SDLC), held outside this repository and cited as such in the decision packs |
 | Historical offline validation | v0.1.0 | inside the same ZIP — predates the v1.6 corrections |
