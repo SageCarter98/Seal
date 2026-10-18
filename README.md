@@ -139,6 +139,17 @@ Class A / Software Class 3** (Stage Plan D02 — not yet signed). Gate status
 lives in the `pm-sdlc-tracker` database for this project, not in this
 repository, and no code change here can record a gate decision.
 
+Every change reaches `main` through a pull request approved by someone other
+than its author — fourteen of fourteen so far. **That is a practice, not an
+enforced rule**: branch protection is unavailable for a private repository on
+this plan (`403 Upgrade to GitHub Pro or make this repository public`), so
+nothing in the repository requires the review that every merged change
+carries. No appointment has been recorded either: the reviewer has no stated
+scope or review period, because that is D01's decision and D01 is unsigned.
+[`docs/decisions/D01_appointments_and_separation.md`](docs/decisions/D01_appointments_and_separation.md)
+measures all of it; `tools/d01_review_separation_probe.py` is where the numbers
+come from.
+
 ## Documents
 
 | Document | Version | Location |
@@ -146,5 +157,5 @@ repository, and no code change here can record a gate decision.
 | Integrated Concept and Implementation Baseline | v1.6 | `Seal_Integrated_Baseline_v1_6.docx` |
 | Integrated Engineering Specification | v1.6 | `Seal_Engineering_Specification_v1_6.docx` |
 | Stage Implementation Plan | v1.2 | inside `Seal_All_Documents_2026_09_10.zip` |
-| Governing PM / SDLC frameworks | v1.0 / v1.1 | inside the same ZIP |
+| Governing PM / SDLC frameworks | v1.0 / v1.1 | inside the same ZIP — superseded; the controlled versions are v1.3 (PM) and v1.4 (SDLC), held outside this repository and cited as such in the decision packs |
 | Historical offline validation | v0.1.0 | inside the same ZIP — predates the v1.6 corrections |

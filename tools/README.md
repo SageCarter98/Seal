@@ -10,6 +10,33 @@ deliberately: each one reports measurements for a person to judge, and a script 
 turned a judgement into a green tick would be the exact failure the decision pack's
 own section 14 warns about.
 
+## `d01_review_separation_probe.py`
+
+Asks what separation of duties this repository can actually evidence: who authored each
+pull request, who approved it, who merged it, how long the review had, whether anything
+merged unapproved, what the platform *requires*, and who holds which collaborator
+permission. It is the evidence behind sections 2, 4 and 6 of
+[`../docs/decisions/D01_appointments_and_separation.md`](../docs/decisions/D01_appointments_and_separation.md).
+
+```
+python tools/d01_review_separation_probe.py
+```
+
+**Three ways it differs from every other probe here.** It is not offline — it shells out
+to `gh`, so it needs the GitHub CLI installed and authenticated, and it exits with a
+plain message rather than a substitute when it cannot reach one. It is not deterministic
+— its subject is live GitHub state, not a frozen fixture, so tomorrow's run may print
+different rows. And it names accounts, because that is what GitHub records; **an account
+is not a person**, and which person operates each account is recorded in §2 of that pack
+as the owner's statement rather than as something any tool here can verify.
+
+Its sharpest output is the one that is not about people at all: asking GitHub for
+`main`'s branch protection returns `403 Upgrade to GitHub Pro or make this repository
+public`. Protection is not switched off, it is unavailable on this plan for a private
+repository — so the review that every merged change carries cannot be *required* by any
+setting in this repository. That is a cost, disclosure or ownership decision, not a
+checkbox, and it is why tracker item #117 cannot be closed by configuration.
+
 ## `d04_identity_probe.py`
 
 Asks whether a scanner's own output can fill the identity tuple `identity.py`
