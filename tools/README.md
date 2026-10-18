@@ -104,3 +104,33 @@ different five.
 flag the core cannot verify, no real personal data exists in this repository to
 inventory, and the determinations D08 needs are a named privacy reviewer's, with six
 of them waiting on counsel.
+
+## `d10_priority_probe.py`
+
+Asks whether the candidate priority policy is operating as a proposal or as a default,
+by running the real `priority.py` over every branch of the baseline Appendix D.6 tree,
+every weak-signal case, and the Attend floor under override. It is the evidence behind
+sections 2 to 6 of
+[`../docs/decisions/D10_operations_policy.md`](../docs/decisions/D10_operations_policy.md).
+
+```
+python tools/d10_priority_probe.py
+```
+
+Needs no fixtures and asserts nothing. Its section 4 prints the six elements D10's
+evidence line requires and which of them the core can express, reading the live module
+rather than this description — one is expressed, four are partial and one is absent.
+Its section 5 demonstrates three gaps between what an `Override` records and what
+`apply_override` checks: an override to Triage clears the Attend floor without an
+approved exception, a retired `policy_version` still applies, and the recorded old
+outcome is never compared to the recomputed one.
+
+**None of those three is reported as a defect to fix.** Each resolves to a policy
+choice the security lead owns, which is why the probe prints the behaviour and the
+decision pack asks the question rather than either of them changing `apply_override`.
+
+**The thresholds it prints are a proposal, not a policy.** `POLICY_VERSION` says
+`seal-priority-proposal-v1` and baseline U06 says the candidate tree, threshold,
+freshness limit and acknowledgement targets "remain pending D10 approval, not silent
+operating defaults". If the string ever reads `approved` without §12 of that pack being
+signed, the probe is the place that will show it.
