@@ -3,11 +3,12 @@
 **Decision pack. Nothing here is a decision, and nothing here appoints anyone.** D01
 belongs to the Project Authority. This pack prepares its four required evidence
 elements, reports what separation of duties the repository can actually evidence after
-fifteen pull requests, and reports one measured constraint that changes what the
-project can promise: the review that has happened on every merged change cannot be
-required by this repository, because branch protection is unavailable on its current
-plan. Every measurement below comes from `tools/d01_review_separation_probe.py` reading
-live GitHub state.
+fifteen pull requests, and reports what became of the one measured constraint that
+changed what the project could promise: while the repository was private, the review
+every merged change carries could not be *required* by any setting in it. The owner
+removed that obstacle on 2026-10-18 by making the repository public (§4), so protection
+is now available and unconfigured. Every measurement below comes from
+`tools/d01_review_separation_probe.py` reading live GitHub state.
 
 | | |
 |---|---|
@@ -127,10 +128,10 @@ said to have failed to review something, and a reviewer with no stated period ca
 said to have stopped. Fourteen approvals are evidence of a habit. Appendix E.3 asks for
 an appointment, which is a commitment with edges.
 
-## 4. Branch protection is unavailable, not switched off
+## 4. Enforcement was unavailable; the owner removed the obstacle by publishing
 
 Probe section 2 asked GitHub what the repository *requires*, as opposed to what it has
-done:
+done. On the morning of 2026-10-18, while the repository was private, it answered:
 
 ```
 main carries no readable branch protection. gh reported:
@@ -138,25 +139,42 @@ main carries no readable branch protection. gh reported:
 ```
 
 Tracker item **#117** (*"Protected release branches enforced; merges require successful
-checks and review"*) has been carried as **Not started**, which reads like a setting
-nobody has got round to. It is not. **Branch protection cannot be enabled for a private
-repository on this plan at all.** The three routes to enforcement are a paid plan, a
-public repository, or an organisation-owned one — a cost decision, a disclosure decision
-and an ownership decision. None is a checkbox, and the third is the one the owner has
-already declined in a different form: ownership of a KenAddme IT Links asset is not
-transferred in passing.
+checks and review"*) had been carried as **Not started**, which reads like a setting
+nobody had got round to. It was not: branch protection could not be enabled for a
+private repository on that plan at all. The three routes to enforcement were a paid
+plan, a public repository, or an organisation-owned one — a cost decision, a disclosure
+decision and an ownership decision.
 
-Two consequences for D01:
+**The owner took the disclosure route the same day.** Acting as Project Authority (§11
+Q1), and after being shown what publication would expose, he directed the repository be
+made public; it was, on 2026-10-18. The same request now answers:
 
-1. **Every "review required" claim in this project is a claim about people, not about
-   the platform.** Nothing stops a merge without review today, and nothing can until one
-   of those three decisions is made. The fourteen approvals happened because the two
-   people involved chose to work that way.
-2. **#117 cannot be completed by configuration, so it should stop being tracked as if it
-   could.** It is either a recorded, time-bound exception — review enforced by practice,
-   with a named person accountable for it — or it is a funded platform change. D01 is
-   where that choice is recorded, because the practice it depends on is the appointment
-   D01 makes.
+```
+{"message":"Branch not protected","status":"404"}
+```
+
+404 rather than 403 is the whole point: protection is now *available and unconfigured*
+instead of unavailable. **Item #117 is therefore closable by configuration for the first
+time, and is not yet closed** — nothing is configured, so `main` still accepts a direct
+push and an unreviewed merge.
+
+**What the disclosure cost, recorded here because a decision's price belongs in the
+record.** Publication is permanent in effect: clones, caches, forks and scraped copies
+survive any later reversal. It exposed the whole repository and its history, including
+the controlled `.docx` document set and `Seal_All_Documents_2026_09_10.zip` — which
+carries KenAddme IT Links' own institutional governance frameworks (PM v1.0, SDLC v1.1)
+rather than Seal product material — the unissued draft counsel instruction in
+`D09_counsel_instruction_tooling_licences.md`, the threat model, and the commit-author
+email addresses of both accounts. The owner was shown each of these before directing
+publication and accepted them; this paragraph records the trade, not a reservation
+about it.
+
+One consequence falls on §2 and should not be lost. The separation claim rests on the
+owner's statement that `SageCarter98` and `kenAddme` are two people. That statement is
+now the only thing standing between a public reader and the opposite conclusion, since
+the `kenAddme` commit-author address is a personal one of similar form. §10.3 asked for
+the attribution in writing when the repository was private; with it public, that step is
+no longer only an internal tidiness.
 
 ## 5. Five roles, two people
 
@@ -231,9 +249,9 @@ arrangement, not the weaker one; it is recorded for completeness.
 **Decidable now, with no external dependency:** all four appointments, including the
 acceptance authority, since §5 shows a two-person set satisfying §3.3 for Class A
 without an exception; the scope of the review (what the reviewer reviews for and may
-refuse); the review period and its revisit date; and whether the absence of enforced
-branch protection is accepted as a recorded exception or escalated to a funded platform
-change.
+refuse); the review period and its revisit date; and the branch-protection
+configuration itself, which §4 shows is now available rather than blocked — what
+settings to require, and whether they bind the owner too.
 
 **Not decidable now:**
 
@@ -289,12 +307,15 @@ recommendation in §9 is taken, D11 inherits two concrete line items from it.
    compensating-assurance clause — the arrangement needs no exception, and for Class A
    that clause would escalate to an Executive Authority chaired by the same person who
    authored every change.
-6. **Record the branch-protection position as an explicit, time-bound exception** rather
-   than leaving #117 as an unstarted task: review is enforced by practice, by named
-   people, until a funded platform change or an ownership change makes it enforceable.
-   §4 shows it cannot be completed as configuration.
-7. **Hand D11 two line items**: deputy-reviewer effort, and the platform cost of
-   enforceable branch protection.
+6. **Configure branch protection on `main` now**, rather than recording the exception
+   this pack's first draft recommended. §4's obstacle is gone: the repository is public,
+   protection returns 404 rather than 403, and #117 is closable by configuration. Until
+   it is configured the exception is still the honest record, so this item is the
+   shortest-lived recommendation in the pack — require a pull request, at least one
+   approving review, the four existing status checks, and no force-push or deletion, and
+   state whether the rules bind the owner's admin account as well.
+7. **Hand D11 one line item**: deputy-reviewer effort. The platform cost the first
+   draft listed beside it was paid in disclosure instead of money (§4).
 
 This is a recommendation from a decision pack. It is not a decision, and the Project
 Authority may reject any part of it.
@@ -302,15 +323,17 @@ Authority may reject any part of it.
 ## 10. What must be verified before §12 is signed
 
 1. Re-run `python tools/d01_review_separation_probe.py` and confirm the separation counts
-   still read 14/14 or better, and that no merge has landed without an approving review.
-   The probe reads live GitHub state, so a lapse shows up as a changed row.
+   still read 14/14 or better, that no merge has landed without an approving review, and
+   what section 2 now says about protection. The probe reads live GitHub state, so both
+   a lapse in practice and a change in enforcement show up as changed lines.
 2. Confirm directly with Russell Kenny that he accepts both the independent reviewer
    and the acceptance authority appointment, their scope and their period. §3's evidence is fourteen approvals, which is
    consent to review changes, not consent to hold an appointment. Appendix E.3's
    first-five-days list is a *proposed* assignment, and an unaccepted assignment leaves
    the task Blocked however complete this pack is.
 3. Confirm the account-to-person attribution in §2 is still accurate, in writing, since
-   the whole separation claim rests on it and nothing in GitHub can corroborate it.
+   the whole separation claim rests on it, nothing in GitHub can corroborate it, and the
+   repository is now public (§4's closing paragraph).
 4. Check the D01 row and §15.3 against the approved `.docx` directly. The quotations here
    come from a stdlib text extraction of `Seal_Integrated_Baseline_v1_6.docx`; headings
    and paragraph text extract reliably, but a table-formatting difference would not be
@@ -322,7 +345,12 @@ Authority may reject any part of it.
 
 1. Does the Project Authority act here as the standing body §3.4 constitutes, or
    through *"a formally recorded delegate"* — and if a delegate, who, recorded where?
-   §3.4 names the chair; it does not say who signs for this project.
+   §3.4 names the chair; it does not say who signs for this project. **Partly answered
+   2026-10-18: the owner confirmed he is "the one" when directing publication, which
+   §4 records as a Project Authority act. Whether that is the standing body, the
+   Executive Authority chair acting alone, or a delegate is still unrecorded — and it
+   matters, because §3.3's compensating-assurance route needs those to be distinguishable
+   people.**
 2. Is the independent reviewer independent enough for Appendix E.3's purpose when the
    account they review under is the company's own?
 3. Is the reviewer and the acceptance authority being the same person accepted for a
@@ -331,8 +359,10 @@ Authority may reject any part of it.
 4. What exactly does the independent reviewer review for, and what may they refuse?
 5. For how long does each appointment run, and what triggers a revisit?
 6. Is the sponsor a distinct appointment here, or does the Project Authority hold it?
-7. Is unenforceable branch protection accepted as a time-bound exception, or funded as a
-   platform change — and if accepted, who is accountable for the practice holding?
+7. ~~Is unenforceable branch protection accepted as a time-bound exception, or funded as
+   a platform change?~~ **Resolved 2026-10-18 by publication (§4): neither. What is open
+   is the configuration — which rules, and whether they bind the owner's admin account.
+   Until something is configured, review remains enforced by practice alone.**
 8. Does review depth get a stated expectation (a size limit per pull request, a required
    checklist), or does it stay the reviewer's judgement?
 9. What happens to work already merged under a practice that predates the appointments —
@@ -380,7 +410,8 @@ changed from deferral to appointment, and the real gap turned out to be the miss
 deputy.
 
 Every measurement in §2, §4 and §6 comes from `tools/d01_review_separation_probe.py`
-reading live GitHub state on 2026-10-18, and the probe asserts nothing — it prints what
+reading live GitHub state on 2026-10-18 — §4 quotes it twice, before and after the
+repository was made public that day, and the probe asserts nothing — it prints what
 the repository evidences so a person can judge it. Tracker item numbers and statuses come
 from the `pm-sdlc-tracker` database for this project, read the same day.
 

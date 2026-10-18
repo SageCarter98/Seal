@@ -141,22 +141,31 @@ print("2. What the platform requires, as opposed to what practice does")
 print("=" * 78)
 
 code, out, err = gh("api", f"repos/{REPO}/branches/main/protection")
+message = err or out
 if code == 0:
     print("   main carries branch protection. Settings as reported:")
     print("   " + out[:900])
-else:
-    message = err or out
-    print("   main carries no readable branch protection. gh reported:")
+elif "Upgrade to GitHub Pro" in message:
+    print("   Branch protection is UNAVAILABLE. gh reported:")
     print(f"     {message[:300]}")
-    if "Upgrade to GitHub Pro" in message:
-        print()
-        print("   Read that message carefully: it is not 'protection is switched off'.")
-        print("   Branch protection is unavailable for a private repository on this")
-        print("   plan, so no setting in this repository can require the review that")
-        print("   section 1 shows happening. Enforcement would need GitHub Pro, a")
-        print("   public repository, or an organisation-owned one -- which is a cost,")
-        print("   a disclosure and an ownership decision respectively, none of them")
-        print("   a checkbox.")
+    print()
+    print("   Read that carefully: it is not 'protection is switched off'. Branch")
+    print("   protection cannot be enabled for a private repository on this plan, so")
+    print("   no setting in this repository can require the review section 1 shows")
+    print("   happening. Enforcement would need GitHub Pro, a public repository, or")
+    print("   an organisation-owned one -- a cost, a disclosure and an ownership")
+    print("   decision respectively, none of them a checkbox.")
+else:
+    print("   Branch protection is AVAILABLE and NOT CONFIGURED. gh reported:")
+    print(f"     {message[:300]}")
+    print()
+    print("   This is the state to read most carefully, because it looks like the one")
+    print("   above in any summary and means the opposite. 404 says the setting exists")
+    print("   and nothing is set; 403 said it could not exist. Until something is")
+    print("   configured, main still accepts a direct push and an unreviewed merge --")
+    print("   so the practice in section 1 is still the only control, with nothing")
+    print("   now standing in the way of enforcing it. Tracker item #117 is closable")
+    print("   by configuration in this state and not closed by reaching it.")
 print()
 
 print("=" * 78)

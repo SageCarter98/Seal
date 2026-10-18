@@ -30,12 +30,15 @@ different rows. And it names accounts, because that is what GitHub records; **an
 is not a person**, and which person operates each account is recorded in §2 of that pack
 as the owner's statement rather than as something any tool here can verify.
 
-Its sharpest output is the one that is not about people at all: asking GitHub for
-`main`'s branch protection returns `403 Upgrade to GitHub Pro or make this repository
-public`. Protection is not switched off, it is unavailable on this plan for a private
-repository — so the review that every merged change carries cannot be *required* by any
-setting in this repository. That is a cost, disclosure or ownership decision, not a
-checkbox, and it is why tracker item #117 cannot be closed by configuration.
+Its sharpest output is the one that is not about people at all, and it changed on
+2026-10-18. Asking GitHub for `main`'s branch protection returned `403 Upgrade to GitHub
+Pro or make this repository public` — protection was not switched off, it was unavailable
+for a private repository on this plan, so the review every merged change carries could
+not be *required* by any setting here. The owner resolved that by making the repository
+public the same day, and the probe now prints `404 Branch not protected`: available,
+unconfigured. The 403-versus-404 distinction is worth keeping in the script, because the
+two look alike in a summary and mean opposite things about whether tracker item #117 can
+be closed at all.
 
 ## `d04_identity_probe.py`
 
