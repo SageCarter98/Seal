@@ -29,7 +29,10 @@ from .decision import Decision, allow, deny
 #: outcomes remain attributable to the policy that produced them.
 POLICY_VERSION = "seal-priority-proposal-v1"
 
-#: Both pending D10 security-lead review (spec Section 6).
+#: Both pending D10 security-lead review (spec Section 6). The freshness limit bounds
+#: the EPSS reading and nothing else: a scanner advisory DB gets its own limit once D04
+#: selects a scanner, rather than this one stretching to cover it
+#: (``D10_operations_policy.md`` §11 Q8, answered 2026-10-18).
 EPSS_ACT_THRESHOLD = 0.10
 EPSS_FRESHNESS = timedelta(hours=48)
 
@@ -59,6 +62,14 @@ class Confidence(str, Enum):
 
 #: Proposed acknowledgement targets (spec Section 6). Workflow proposals, not
 #: legal deadlines, and not a substitute for institutional service targets.
+#:
+#: **Calendar days, deliberately** (``D10_operations_policy.md`` §11 Q1, answered
+#: 2026-10-18): Appendix D.6's "business day" wording is amended to calendar rather than
+#: this table moving behind a working-time calculation, so a target can fall on a
+#: weekend -- a Friday ``ATTEND`` finding comes due Saturday. ``TRIAGE``'s four hours is
+#: an addition to Appendix D.6's four-action table, ratified on the same date (§11 Q3):
+#: a finding nobody can yet classify should not wait longer than one already known to be
+#: urgent. Both are policy, so changing either must bump ``POLICY_VERSION``.
 ACKNOWLEDGEMENT_TARGETS: dict[Action, timedelta | None] = {
     Action.ACT: timedelta(hours=4),
     Action.ATTEND: timedelta(days=1),
@@ -70,6 +81,15 @@ ACKNOWLEDGEMENT_TARGETS: dict[Action, timedelta | None] = {
 #: Severity at or above which a low-confidence finding enters urgent validation
 #: rather than waiting (spec Section 6: "Low-confidence High/Critical findings
 #: enter urgent validation immediately").
+#:
+#: The number itself is still open: 7.0 is the CVSS v4 floor of High, and D04 has not
+#: selected the adapter whose band it translates (``D10_operations_policy.md`` §3).
+#: What is settled is the *shape* (§11 Q6, answered 2026-10-18): urgency from weak
+#: evidence stays a flag beside the outcome rather than a branch within the tree, which
+#: keeps it a separate dimension in the way spec Section 6 requires of severity, EPSS
+#: and confidence. That makes ``Priority.urgent_validation`` an entry condition W02 must
+#: honour in its own right -- a queue that reads ``action`` first and the flag second
+#: does not implement "enter urgent validation immediately".
 URGENT_VALIDATION_SEVERITY = 7.0
 
 

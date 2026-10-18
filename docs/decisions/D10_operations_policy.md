@@ -7,7 +7,10 @@ policy, and reports four numbers where the built behaviour and the documented pr
 are not the same thing. It also reported three override controls the documents require
 and the core did not check; those were implemented on 2026-10-18 at the owner's
 instruction, and §5 records the three provisional answers now running in code and what
-each still needs from D10. Every measurement below comes from
+each still needs from D10. On the same day the owner answered four of §11's ten
+questions — 1, 3, 6 and 8 — each of them the way the code already has it; §3, §9 and
+§11 record those answers, and §12 remains unsigned because an owner's answer to a
+question is not two named roles' signature on a policy. Every measurement below comes from
 `tools/d10_priority_probe.py` running the real `priority.py`.
 
 | | |
@@ -88,8 +91,12 @@ Worth recording in W01's design rather than discovering in W04.
 
 ## 3. Four numbers that are the code's and not the baseline's
 
-All four are defensible. None of them is approved, and three of them are not in
-Appendix D.6 at all.
+All four are defensible. Three of them were **answered by the owner on 2026-10-18**,
+each the way the code already has it, and are marked below; the fourth
+(`URGENT_VALIDATION_SEVERITY`) is still open because it waits on D04 selecting the
+adapter whose severity band the number translates. An answer here is a position on
+record that W01 and W02 may build against. It is not §12's signature, and none of the
+four is approved policy until §12 is signed.
 
 **`URGENT_VALIDATION_SEVERITY = 7.0`.** Appendix D.6 says "Low-confidence High/Critical
 findings enter urgent validation immediately" — a severity *band*, not a number. 7.0 is
@@ -107,11 +114,28 @@ than Monday. The difference is not a rounding error, and it cannot be fixed insi
 that the pure core has no way to hold. Either D10 approves calendar days as the policy,
 or W01 owns a working-time calculation and the targets table moves behind it.
 
+> **Answered 2026-10-18 (owner), §11 Q1: calendar days are the policy.** Appendix D.6's
+> "business day" wording is amended to calendar days rather than the code being changed
+> to match it. Two consequences follow and are accepted rather than discovered later:
+> W01 does **not** own a working-time calculation and the targets table stays in the
+> core as the answer rather than becoming an input to one; and an acknowledgement target
+> can fall on a weekend — a Friday Attend finding comes due Saturday — so whoever
+> staffs acknowledgement either covers weekends or accepts that the target is missed on
+> record rather than quietly reinterpreted. This is the half of the question the core
+> can hold; D10's signature still has to state it in the policy text.
+
 **Triage's four hours.** Appendix D.6 proposes targets for Act, Attend, Track* and
 Track only. The code gives Triage the same four hours as Act. Defensible — an
 unclassifiable finding should not wait longer than an urgent one — but it is an
 addition, and the whole point of U06's "not silent operating defaults" sentence is that
 additions get ratified rather than inherited.
+
+> **Answered 2026-10-18 (owner), §11 Q3: Triage keeps four hours.** The addition is
+> ratified rather than removed, on the reasoning the paragraph above gives: a finding
+> nobody can yet classify should not wait longer than one already known to be urgent.
+> Appendix D.6's four-action target table gains a fifth row rather than Triage
+> inheriting a target by accident. This pairs with §5(a) — Triage is below the Attend
+> floor *and* on Act's clock, which is coherent only because both were answered.
 
 **Urgent validation is a flag, not a branch.** Probe section 2's last block shows a
 severity 8.0 Low-confidence finding landing on **Track\*** with `urgent_validation=True`
@@ -119,6 +143,16 @@ beside it. Appendix D.6 says such findings "enter urgent validation immediately"
 a Track\* outcome carrying a flag *is* entering urgent validation immediately depends
 entirely on what W02's queue does with the flag — the core cannot answer it. D10 should
 state the intent so W01 and W02 implement the same reading.
+
+> **Answered 2026-10-18 (owner), §11 Q6: the flag is the mechanism; the tree does not
+> re-route.** A Track\* outcome carrying `urgent_validation=True` satisfies "enter urgent
+> validation immediately", so the branch and the validation urgency stay separate
+> dimensions — which is the same separation spec Section 6 requires of severity, EPSS
+> and confidence. **This converts a core property into an obligation on W02**: the flag
+> must be an entry condition into the validation queue in its own right, not a sort key
+> applied after the action has set the queue. A W02 that reads the action first and the
+> flag second does not implement this answer, and that is the specific way this answer
+> can be met in the core and missed in the product.
 
 ## 4. The six required elements, one at a time
 
@@ -337,25 +371,34 @@ recorded as `seal-priority-approved-v1`:
 1. **Approve** the tree, the 0.10 threshold and the 48-hour EPSS freshness limit as
    stated in Appendix D.6. They are implemented, tested, and the probe shows every
    branch firing in the documented order.
-2. **Amend** the acknowledgement targets to say explicitly whether they are calendar or
-   business days. If business, W01 owns the working-time calculation and the core's
-   table becomes the input to it rather than the answer.
-3. **Amend** the policy to state Triage's target and Triage's position relative to the
-   Attend floor, rather than inheriting both from the code. Triage is now *implemented*
-   as below the floor (§5(a)); stating it remains D10's act, and reversing it remains
-   D10's option.
+2. **Amend** the acknowledgement targets to say explicitly that they are **calendar**
+   days (owner's answer, §3/§11 Q1), which is what the code holds. W01 therefore does
+   not own a working-time calculation, and the policy text must say that a target can
+   fall on a weekend.
+3. **Amend** the policy to state Triage's target as **four hours** (owner's answer,
+   §3/§11 Q3) and Triage's position as **below the Attend floor** (§5(a)), rather than
+   inheriting either from the code. Both are what the code holds; stating them remains
+   D10's act, and reversing either remains D10's option.
 4. **Amend** the override rules to require that `policy_version` match the active policy
    and that `computed` match the recomputed outcome, with the reason codes split so a
    missing evidence reference does not report as a missing reviewer. **All three parts of
    this item are now implemented** (§5(b), §5(c)); what is outstanding is D10's
    ratification of them and of the lapse-versus-escalate choice in §5(b).
 5. **Defer, with a recorded reason and a review date**: remediation deadlines (pending
-   an asset-impact classification) and the non-EPSS freshness limit (pending D04).
+   an asset-impact classification) and the non-EPSS freshness limit (pending D04). The
+   owner's answer to §11 Q8 fixes the *shape* of that second deferral rather than
+   closing it: the 48 hours governs the EPSS reading only, and the scanner advisory DB
+   gets its own limit, so what D04 owes D10 is one number for a second input — not a
+   decision about whether 48 hours stretches to cover it.
 6. **Record** that the maintenance window is designed with the authorization profile and
    the D06 egress boundary, not with the priority tree.
+7. **Record** that urgent validation stays a flag beside the outcome rather than a
+   branch within the tree (owner's answer, §3/§11 Q6), and that W02 must treat the flag
+   as an entry condition into the validation queue in its own right.
 
 This is a recommendation from a decision pack. It is not a decision, and the security
-lead and service owner may reject any part of it.
+lead and service owner may reject any part of it — including the four questions the
+owner has answered, which are positions on record rather than signatures.
 
 ## 10. What must be verified before §12 is signed
 
@@ -374,15 +417,27 @@ lead and service owner may reject any part of it.
    without ruling on all three would ratify by silence.
 4. Confirm with D04's owner whether a scanner has been selected, since the freshness
    deferral in §9.5 lapses the moment one is.
-5. Confirm the two accountable roles have accepted the assignment. Appendix E.3's
+5. Confirm that the four answers recorded in §3 and §11 on 2026-10-18 are the security
+   lead's and service owner's position too, not only the owner's. Four of the ten
+   questions arriving pre-answered makes §12 faster to sign and easier to sign without
+   reading; the weekend-exposure consequence of Q1 and the W02 obligation created by Q6
+   are the two a signature should not inherit unexamined.
+6. Confirm the two accountable roles have accepted the assignment. Appendix E.3's
    first-five-days list is a *proposed* assignment, and an unaccepted assignment leaves
    the task Blocked regardless of how complete this pack is.
 
 ## 11. Open questions for the security lead and service owner
 
-1. Calendar or business days for Attend and Track\*?
+Four were answered by the owner on 2026-10-18 and are marked **Answered**. They are
+answers on record, which W01 and W02 may build against and §12 must still ratify; the
+remaining six are open.
+
+1. Calendar or business days for Attend and Track\*? **Answered: calendar — the targets
+   table stays in the core, W01 owns no working-time calculation, and a target may fall
+   on a weekend (§3).**
 2. Is Triage below the Attend floor, or beside it? *(Code now says below — §5(a).)*
-3. Does Triage keep four hours, or get its own target?
+3. Does Triage keep four hours, or get its own target? **Answered: four hours, ratified
+   as an addition to Appendix D.6's four-action table (§3).**
 4. Must an override's `policy_version` match the active policy — and if it does not,
    does the override lapse, or does it survive with an escalation? *(Code now requires
    the match and lapses — §5(b).)*
@@ -390,10 +445,15 @@ lead and service owner may reject any part of it.
    now verifies it — §5(c).)*
 6. Does a Track\* outcome carrying `urgent_validation=True` satisfy "enter urgent
    validation immediately", or must the tree itself route such findings differently?
+   **Answered: the flag satisfies it and the tree does not re-route — which obliges W02
+   to treat the flag as an entry condition into the validation queue, not a sort key
+   applied after the action (§3).**
 7. Which asset-impact classification will remediation deadlines be written against, and
    who owns producing it?
 8. Does the EPSS 48-hour limit also govern the scanner advisory DB once D04 selects one,
-   or does that input get its own limit?
+   or does that input get its own limit? **Answered: its own limit — `EPSS_FRESHNESS`
+   bounds the EPSS reading only, as the code has it, and the advisory DB's limit is a
+   separate number D04 owes D10 (§9.5).**
 9. Who must be named as an incident contact before an authorization is valid, and what
    happens when a named contact does not answer?
 10. Where does the maintenance window live — authorization profile, egress boundary, or
@@ -420,8 +480,12 @@ anyone's behalf.
 ## 13. Provenance and limits
 
 Drafted 2026-10-18 by Claude Opus 5 at the owner's instruction, and amended the same
-day — also at the owner's instruction — after the three §5 controls were implemented;
-§5 records what changed and what it costs this pack. Quotations come from
+day — also at the owner's instruction — after the three §5 controls were implemented
+and after the owner answered §11's questions 1, 3, 6 and 8; §5 records what the
+implementation changed and what it costs this pack, and §3 records each answer beside
+the measurement that raised it. The answers are the owner's own words rendered as
+policy positions, not inferences from the code — the instruction was to answer those
+four "the way the code has them". Quotations come from
 `Seal_Integrated_Baseline_v1_6.docx` (Appendix D.6, Appendix E.3, Appendix E.7 row W01,
 Appendix E.8 row H03, and the risk table at §18) and
 `Seal_Engineering_Specification_v1_6.docx` §6 — whose prioritization text is identical
