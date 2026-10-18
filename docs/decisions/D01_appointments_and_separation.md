@@ -103,6 +103,25 @@ the permissions the review requires and none beyond it. This is a personal repos
 so write is also the collaborator ceiling — admin would require an organisation-owned
 repository.
 
+**A third account was invited on 2026-10-18**: `MiltonBello15`, at write, at the owner's
+direction, named by him as Milton. The invitation is **pending acceptance** at the time
+of writing, so the account can do nothing yet. Three things about it belong in this pack
+rather than in a commit message:
+
+- **It is not an appointment.** Write access is the permission to open, review, approve
+  and merge. Which role Milton holds — if any — is §12's to record, and §12 is unsigned.
+  He is a collaborator who has been given one named obligation to own (see
+  `../TRACEABILITY.md`, "Obligations with named owners"), which is a different thing from
+  a D01 role with a scope and a review period.
+- **The attribution carries the same caveat as `kenAddme`'s.** That this account is
+  operated by a person called Milton is the owner's statement. Nothing in GitHub
+  corroborates it, and this pack does not infer a surname from a username.
+- **It changes the separation arithmetic, but only once he accepts and only if D01 says
+  so.** §5 was written about two people. A third person with write on a public repository
+  and no recorded scope is not yet an improvement to separation; it is one more account
+  that can approve a pull request. What makes it an improvement is §12 naming what he
+  may approve.
+
 ## 3. A practice is not an appointment
 
 D01 asks for four things. The repository supplies part of one of them.
@@ -243,6 +262,18 @@ The honest summary: D01 is appointable today without exceptions, and the work is
 the people, scoping the review, setting the period, and deciding what happens when the
 single reviewer is away. The difficulty is not the arithmetic of five roles across two
 people — it is that the arrangement has no slack, and slack is what D11 would fund.
+
+**The third collaborator invited on 2026-10-18 (§2) is the first slack this project has
+had, and it is not slack until D01 uses it.** An accepted invitation gives Milton the
+mechanical ability to approve a pull request. It does not make him a deputy reviewer,
+because a deputy who may approve anything is not a control, and it does not make him an
+acceptance authority, because §3.3 would then need the sponsor to be someone else again.
+The two appointments it could support are a **deputy independent reviewer** — which would
+answer §11 Q10 and remove the pressure to lift branch protection when one reviewer is
+away — or the **acceptance authority**, which would let the current reviewer stop holding
+both the change-level and the deliverable-level judgement. **Those are different
+decisions with different consequences, and picking one is the Project Authority's act,
+not an inference from a collaborator invitation.**
 
 ## 6. What the evidence cannot show
 
@@ -393,7 +424,10 @@ Authority may reject any part of it.
 10. Who deputises when the single independent reviewer is unavailable — and until
     someone does, who holds the authority to lift branch protection, on what record, and
     for how long? §4's configuration turned this from a staffing preference into the
-    project's only route to merging in that situation.
+    project's only route to merging in that situation. **A candidate now exists:
+    `MiltonBello15` was invited at write on 2026-10-18 (§2). What is open is whether he
+    is appointed deputy reviewer, acceptance authority, or neither, and what he may
+    approve — not whether he can click approve, which write access already settles.**
 
 ## 12. Decision record — unsigned
 
