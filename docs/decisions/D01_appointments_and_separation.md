@@ -227,26 +227,38 @@ That is not a reason to stop; it is the reason the disclosure and the reasoning 
 be written down here, where they can be read by someone outside the loop, since no
 approval step inside the loop adds anything the disclosure does not.
 
-**With the reviewer question judged, one question remains and it is narrower: who holds
-acceptance.** Three ways to close it, for §12:
+> **Decided 2026-10-18 by the owner as Project Authority: Milton takes acceptance
+> authority at Gate 4 as stated, under a recorded compensating arrangement.** That is
+> option 2 below. It does not make the sibling relation immaterial and this pack does not
+> record it as immaterial — it records that the Project Authority accepted a known,
+> disclosed conflict with compensating measures, which is the one §12.2-compliant way to
+> keep it. §9.8 carries the proposed terms; §12 is where they are adopted.
 
-1. **Russell keeps acceptance past Gate 4**, and Milton holds the deputy-reviewer half
-   only. This applies the judgement already made — extended family, non-material — to the
-   role where the degree matters most, and needs nobody new. It reverses only the Gate 4
-   transfer stated earlier today, not the deputy appointment.
-2. **Milton takes acceptance at Gate 4 as stated, with a compensating arrangement
-   recorded** — what he must check, what he may refuse, what escalates past him, a time
-   limit, and the §3.3 Executive Authority step acknowledged as a self-approval since
-   §3.4 puts that chair in the same person. Defensible as a disclosure; it does not make
-   the sibling relation immaterial, it records that it was accepted.
-3. **An unrelated acceptance authority**, which is the only option that produces
-   independence on that one control rather than describing its absence, and the only one
-   that needs a person and a D11 line item.
+**With the reviewer question judged, one question remained and it is now decided: who
+holds acceptance.** The three closings, with the one taken marked:
 
-The pack's own recommendation is now narrower than it was this morning: not "engage
-someone unrelated for assurance", but **do not let the one control with no second pair of
-eyes rest on the closest relation**. Option 1 achieves that without engaging anybody,
-which is why §9.8 now puts it first.
+1. ~~Russell keeps acceptance past Gate 4, Milton deputy only.~~ Not taken. It was this
+   pack's recommendation, it needed nobody new, and the Project Authority chose otherwise.
+2. **Milton takes acceptance at Gate 4 as stated, under a recorded compensating
+   arrangement. ← taken.** §3.3 is the clause that permits this and it is not permissive
+   about the terms: a compensating arrangement must name the reviewer, the evidence to be
+   checked and the time limit, and for Class A it "require[s] Executive Authority
+   approval" and "may not waive legal, security, privacy or financial controls". §9.8
+   proposes the terms; the Executive Authority step is a self-approval and §12 must say so
+   in those words.
+3. ~~An unrelated acceptance authority.~~ Not taken. It remains the only closing that
+   produces independence on this control rather than compensating for its absence, and it
+   stays on D11's list as the option purchasable later.
+
+**What option 2 costs, said once and plainly.** The project's final acceptance will be
+signed by the author's brother, under terms set by the author, approved by the author
+wearing the Executive Authority hat. No step in that chain is independent. The
+compensating measures below do not fix that; they make the acceptance *checkable by
+someone else afterwards*, which is a different and weaker property — and it is the
+property the pack can actually deliver. A reader who disagrees with the Project
+Authority's judgement will be able to see exactly what was decided, by whom, on what
+terms, and what evidence the acceptance rested on. That is the whole of what disclosure
+buys, and it is why the terms have to be specific rather than reassuring.
 
 Whichever is chosen, a weak arrangement that is disclosed is auditable, while the same
 arrangement implied by omission is the finding. This pack's job was to make sure the first
@@ -419,9 +431,11 @@ satisfy every row and still fail §14.1's "independent enough to challenge" test
 owner disclosed on 2026-10-18 that **Russell is a relative through the extended family
 and Milton is his brother** (§2), so every row of every table above stays satisfied while
 the functional test is a separate question they cannot reach. The Project Authority has
-judged the reviewer relation non-material; the open row is Gate 4 acceptance, where the
-relation is closest and the control has no second pair of eyes. The tables are not wrong
-— they measure role separation, which holds. §2 is where the rest is weighed.
+judged the reviewer relation non-material and has accepted the Gate 4 acceptance relation
+under a compensating arrangement (§2). Both decisions are his; both are recorded with
+their reasoning and with this pack's declined recommendations beside them. The tables are
+not wrong — they measure role separation, which holds. §2 is where the rest is weighed,
+and §9.8 is where the compensating terms are proposed.
 
 **What the appointment fixes immediately:** §11 Q10's gap. An unavailable reviewer no
 longer leaves lifting branch protection as the only route to a merge, which was the
@@ -552,16 +566,27 @@ recommendation in §9 is taken, D11 inherits two concrete line items from it.
    are waiting or lifting protection, and §9.5 is where that gap is recorded.
 7. **Hand D11 one line item**: deputy-reviewer effort. The platform cost the first
    draft listed beside it was paid in disclosure instead of money (§4).
-8. **Keep acceptance with the more distant relation: leave it with Russell past Gate 4,
-   and give Milton the deputy-reviewer half only.** This is §2's option 1, it needs nobody
-   new, and it applies the judgement the Project Authority has already made — extended
-   family, non-material — to the one control that has no second pair of eyes behind it.
-   The reviewer question is settled and this pack's earlier recommendation to engage an
-   unrelated person is declined on the record (§2); what remains is not to let the
-   closest relation hold the signature. If the Gate 4 transfer stands instead, record the
-   compensating arrangement §2's option 2 describes, including the Executive Authority
-   step as a self-approval, rather than leaving a reader to work the position out from
-   three surnames.
+8. **Adopt a compensating arrangement for the Gate 4 acceptance authority, in these
+   terms.** The Project Authority chose §2's option 2 over this pack's recommendation, so
+   the pack's job is now to make that choice recordable rather than to re-argue it. §3.3
+   requires a named reviewer, the evidence to be checked and a time limit; the rest of
+   these terms exist because the signature will be a related party's and the only
+   available substitute for independence is after-the-fact checkability.
+
+   | Term | Proposed |
+   |---|---|
+   | **Named acceptance authority** | Milton Kenny Adedeme (`MiltonBello15`), brother of the author, from Gate 4 |
+   | **Evidence he must check before accepting** | the T01–T14 acceptance mapping; that every claim in the release pack is locatable, digest-bound, verified and same-revision (what `release.py` already refuses without); that no tracker item supporting the release reads Complete without a specific locatable reference; that CI was green on the exact accepted revision; and that an approving review from the independent reviewer exists for every change in the release |
+   | **What he may refuse** | acceptance, on any unmet acceptance criterion, with the refusal recorded in the decision record and the tracker before any further work on that release |
+   | **If the Project Authority disagrees with a refusal** | the override is recorded as an override, in the decision record, naming the criterion overridden and the reason. It does not escalate to anyone, because §3.4 puts the Executive Authority chair in the same person — so the compensating measure is publication of the disagreement, not its resolution |
+   | **What must escalate past him** | anything with a legal or regulatory consequence (D09/H03: no autonomous regulatory filing, the duty determination is counsel's); any conflict beyond the disclosed family relation; and any matter §3.3 forbids a compensating arrangement from waiving — legal, security, privacy or financial controls |
+   | **Time limit** | expires at the Gate 5 continuation decision or twelve months from adoption, whichever is earlier, and must be re-approved rather than rolled over |
+   | **§3.3 Executive Authority approval** | recorded as a **self-approval**: the Executive Authority chair, the Project Authority, the sponsor, the project manager and the author are one person, and §12 must say so in those words rather than presenting the step as independent sign-off |
+   | **Standing statement in the record** | independent assurance in §19.1's sense is absent for the acceptance control, and present for no control other than through the public visibility of the reviewer's work (§2) |
+
+   Adopt, amend or replace these in §12. What the pack cannot do is let the arrangement
+   exist as an intention: §3.3's clause is satisfied by recorded terms, and an unrecorded
+   compensating arrangement is the same thing as none.
 
 This is a recommendation from a decision pack. It is not a decision, and the Project
 Authority may reject any part of it.
@@ -589,10 +614,12 @@ Authority may reject any part of it.
    the independence §14.1 and §19.1 require. **Done for the reviewer, 2026-10-18:**
    Russell Kenny Adedeme is a relative through the extended family and the Project
    Authority has judged that non-material, with his reasoning and this pack's declined
-   recommendation both recorded (§2). **Outstanding for acceptance:** Milton Kenny
-   Adedeme is the owner's brother and holds acceptance from Gate 4 under the appointment
-   stated earlier the same day, so §12 needs one of §2's three closings and the
-   materiality judgement that goes with it.
+   recommendation both recorded (§2). **Decided for acceptance, the same day:** Milton
+   Kenny Adedeme is the owner's brother, holds acceptance from Gate 4, and the Project
+   Authority accepted that relation under a compensating arrangement rather than judging
+   it immaterial (§2). **Outstanding:** adopting the terms. §9.8 proposes them; §12 is
+   where they become the arrangement §3.3 requires, including the Executive Authority
+   step recorded as a self-approval.
 5. Check the D01 row and §15.3 against the approved `.docx` directly. The quotations here
    come from a stdlib text extraction of `Seal_Integrated_Baseline_v1_6.docx`; headings
    and paragraph text extract reliably, but a table-formatting difference would not be
@@ -618,10 +645,10 @@ Authority may reject any part of it.
    requires the answer before signing. An explicit "no relationship" is a complete
    answer; silence is not. **Answered 2026-10-18: Russell is a relative through the
    extended family, judged non-material by the Project Authority and continuing as
-   reviewer; Milton is the owner's brother. What stays open is only the acceptance row —
-   §2's three closings — since that is where the closest relation meets the control with
-   no second pair of eyes, and since every escalation route for a materiality judgement
-   returns, per §2, to the person it concerns.**
+   reviewer; Milton is the owner's brother. The acceptance row is decided the same
+   day: Milton holds it from Gate 4 under a compensating arrangement, accepted rather
+   than judged immaterial. What stays open is the wording of that arrangement (§9.8's
+   proposed terms) and nothing else in this question.**
 3. Is the reviewer and the acceptance authority being the same person accepted for a
    Class A / Class 3 project, given §3.3 permits it and §5's second point records
    what it concentrates? **Answered 2026-10-18: accepted until Gate 4, then separated —
@@ -674,6 +701,7 @@ recorded where the question it answers lives:
 | Milton is acceptance authority from Gate 4 | Stated | §5, §11 Q3 |
 | Milton Kenny Adedeme is the owner's brother; Russell Kenny Adedeme is a relative through the extended family | Disclosed in full, on request, the same day the pack asked | §2, §10.4, §11 Q2 |
 | Russell's relation is not material to his independence as reviewer, and no unrelated person is to be engaged in addition | Judged as Project Authority, this pack's §9.8 recommendation declined on the record | §2, §9.8 |
+| Milton takes acceptance authority at Gate 4 as stated, under a compensating arrangement — the relation accepted, not judged immaterial | Decided as Project Authority; §2's option 1 (this pack's recommendation) and option 3 both declined | §2, §9.8 |
 
 Those are positions on record, which the project may act on and which this pack has
 acted on in §5, §9 and §11. **They are not the table above.** The table needs names
