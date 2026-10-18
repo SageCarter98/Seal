@@ -129,12 +129,16 @@ Kenny Adedeme (owner, Project Authority, author of every change), Russell Kenny
 (deputy reviewer, acceptance authority from Gate 4). "Kenny" appears in all three and
 "Kenny Adedeme" in two.
 
-This pack draws no conclusion from that, and it is not drawing the inference it is
-careful elsewhere not to draw: shared name components are not evidence of a relationship,
-still less of one person, and an earlier session in this project recorded exactly that
-kind of inference about two accounts and was corrected by the owner. **What it does mean
-is that the relationships must be stated rather than left for a reader to guess**, for
-three reasons:
+> **Stated 2026-10-18 by the owner: Milton Kenny Adedeme is his brother.** Recorded
+> here because §10.4 requires it, and recorded as given rather than inferred — the pack
+> asked the question in the morning precisely so that the answer would come from the
+> Project Authority instead of from a reader's guess. **Russell Kenny's relationship to
+> either of them is still unstated**, and §10.4 is not satisfied until it is: an explicit
+> "no relationship" is a complete answer, and its absence is the one thing that leaves
+> the whole separation claim open.
+
+The relationship is disclosed, which is what the framework asks for first. What it does
+not do is settle anything on its own, for three reasons:
 
 1. **The framework's independence test is functional, not formal.** §14.1: "High-risk
    deliverables require reviewers independent enough to challenge the delivery team."
@@ -153,12 +157,43 @@ three reasons:
    that is working from exactly the material this pack publishes; the only way the record
    answers them is by stating the position.
 
-So §11 Q2 now asks for each named individual's relationship to the others, or an explicit
-statement that there is none, and §10 requires it recorded before §12 is signed. If the
-relationships are close, the answer is not necessarily a different appointment — a Class A
-project may keep a related reviewer where the Project Authority records why that person
-can still challenge and report without pressure, and what compensates. What it may not do
-is leave the question unanswered in a public governance record.
+**Weighed against those three, the disclosed relationship lands differently on the two
+halves of Milton's appointment.**
+
+*The deputy reviewer half is defensible on its face.* A deputy who reviews code when the
+primary reviewer is unavailable, under a recorded trigger, with the primary's scope and
+the primary still accountable, is a brother checking work — and the alternative on offer
+was lifting branch protection and merging unreviewed. Between a related reviewer and no
+reviewer, the related reviewer is the stronger control, and §3.3's compensating-assurance
+clause exists for exactly that trade.
+
+*The Gate 4 acceptance half is the one to look at again.* From Gate 4 it would make the
+project's deliverable acceptance the act of the author's brother, where the author is
+also the sponsor, the project manager and the Project Authority who made the appointment.
+§14.1's test — "independent enough to challenge the delivery team" — is a question about
+whether a refusal is realistic, and acceptance is the single control in this project with
+no second pair of eyes behind it. Nothing here says that acceptance would be wrong. It
+says the record has to show the Project Authority weighed it, because a reader of a public
+Class A record will.
+
+**And the escalation route has a loop the record should name.** §12.2 makes a *material*
+conflict of interest an immediate escalation, and §3.3 requires Executive Authority
+approval for Class A compensating arrangements. §3.4 puts the Executive Authority chair
+and the Project Authority chair in the same person — who is also the author, the sponsor,
+the project manager, and the brother in question. **Every route this framework offers for
+testing or compensating this conflict terminates in the person the conflict is about.**
+That is not a reason to stop; it is the reason the disclosure and the reasoning have to
+be written down here, where they can be read by someone outside the loop, since no
+approval step inside the loop adds anything the disclosure does not.
+
+Three ways to resolve the Gate 4 half, for the Project Authority to choose between in
+§12: **keep Russell Kenny as acceptance authority** past Gate 4, if his own relationship
+is "none" (§10.4), and give Milton the deputy half only; **appoint an unrelated acceptance
+authority**, which is what D11 would fund and what §5 originally called the third person;
+or **keep the appointment and record a compensating arrangement** — what Milton may
+refuse, what evidence he must check, what is escalated past him, and the time limit — in
+which case §3.3's Executive Authority step should be recorded as a self-approval with its
+loop acknowledged, rather than presented as independent sign-off it cannot be.
 
 ## 3. A practice is not an appointment
 
@@ -323,11 +358,13 @@ is compliant in both of its stages and strictly better in the second:
 
 **What the tables above do not test.** Every provision in them is about *roles* — who
 approves, who accepts, who authored. §3.3 is silent on relatedness, so an arrangement can
-satisfy every row and still fail §14.1's "independent enough to challenge" test. §2's
-closing block is where that question lives, and the staged appointment makes it sharper
-rather than softer: from Gate 4 the acceptance authority is a person whose recorded name
-shares two components with the Project Authority's, and acceptance is the one judgement
-with no second pair of eyes behind it.
+satisfy every row and still fail §14.1's "independent enough to challenge" test. The
+owner stated on 2026-10-18 that **Milton is his brother** (§2), which both stages of this
+appointment now carry: the tables above stay satisfied, and the functional test is a
+separate question they cannot answer. §2 weighs it half by half — the deputy-reviewer
+half is defensible as the stronger of the two available controls, the Gate 4 acceptance
+half is the one to look at again — and offers three resolutions for §12 to choose
+between.
 
 **What the appointment fixes immediately:** §11 Q10's gap. An unavailable reviewer no
 longer leaves lifting branch protection as the only route to a merge, which was the
@@ -417,7 +454,10 @@ recommendation in §9 is taken, D11 inherits two concrete line items from it.
 2. **Appoint** all four roles to the two people already doing the work — the owner as
    sponsor and project manager, Russell Kenny as independent reviewer and acceptance
    authority — which §5 shows satisfies §3.3 for Class A without a compensating
-   arrangement. Converting practice into appointment introduces nobody new.
+   arrangement. Converting practice into appointment introduces nobody new. **Record each
+   appointee's relationship to the others in the same act** (§10.4): Milton is the
+   owner's brother, stated 2026-10-18; Russell's relationship is still unstated, and an
+   appointment table that names him without it is incomplete rather than merely terse.
 3. **State the review scope explicitly**: what the independent reviewer reviews for, what
    they may refuse, and what must not be merged without them. Fourteen approvals with no
    stated scope are the gap §3 names, and this is the cheapest part of D01 to close.
@@ -447,6 +487,14 @@ recommendation in §9 is taken, D11 inherits two concrete line items from it.
    are waiting or lifting protection, and §9.5 is where that gap is recorded.
 7. **Hand D11 one line item**: deputy-reviewer effort. The platform cost the first
    draft listed beside it was paid in disclosure instead of money (§4).
+8. **Decide the Gate 4 acceptance authority on the independence test rather than on
+   availability.** The brother relationship disclosed in §2 does not touch §3.3's
+   role-based provisions and does bear on §14.1's functional one, and acceptance is the
+   only control here with no second pair of eyes. §2 sets out the three resolutions —
+   keep Russell past Gate 4, fund an unrelated acceptor, or keep the appointment with a
+   recorded compensating arrangement whose Executive Authority step is acknowledged as a
+   self-approval. Choosing by default is the one option that leaves a public Class A
+   record unable to show the question was asked.
 
 This is a recommendation from a decision pack. It is not a decision, and the Project
 Authority may reject any part of it.
@@ -471,10 +519,11 @@ Authority may reject any part of it.
    repository is now public (§4's closing paragraph).
 4. **Record each named individual's relationship to the others, or state explicitly that
    there is none**, with the Project Authority's reasoning on whether any of them impairs
-   the independence §14.1 and §19.1 require. This is not optional for a Class A project
-   whose reviewer and future acceptance authority share name components with its Project
-   Authority, and §12.2 makes a material conflict an escalation rather than a judgement
-   anyone here makes privately. Do it before signing, not after a reader asks.
+   the independence §14.1 and §19.1 require. **Partly done 2026-10-18: Milton Kenny
+   Adedeme is the owner's brother (§2). Russell Kenny's relationship to either of them is
+   still unstated, and the reasoning on materiality is still unwritten** — the disclosure
+   is the first half of what §12.2 asks for and the judgement is the second. Finish both
+   before signing, not after a reader asks.
 5. Check the D01 row and §15.3 against the approved `.docx` directly. The quotations here
    come from a stdlib text extraction of `Seal_Integrated_Baseline_v1_6.docx`; headings
    and paragraph text extract reliably, but a table-formatting difference would not be
@@ -498,7 +547,10 @@ Authority may reject any part of it.
    ("independent enough to challenge", "without pressure") that a role title does not
    answer; §2's closing block explains why the question is now unavoidable and §10.4
    requires the answer before signing. An explicit "no relationship" is a complete
-   answer; silence is not.
+   answer; silence is not. **Partly answered 2026-10-18: Milton is the owner's brother.
+   Russell's relationship is still unstated, and so is the Project Authority's judgement
+   on whether the disclosed one is material under §12.2 — a judgement whose every
+   escalation route, per §2, returns to the person it concerns.**
 3. Is the reviewer and the acceptance authority being the same person accepted for a
    Class A / Class 3 project, given §3.3 permits it and §5's second point records
    what it concentrates? **Answered 2026-10-18: accepted until Gate 4, then separated —
