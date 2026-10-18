@@ -122,7 +122,10 @@ or W01 owns a working-time calculation and the targets table moves behind it.
 > can fall on a weekend — a Friday Attend finding comes due Saturday — so whoever
 > staffs acknowledgement either covers weekends or accepts that the target is missed on
 > record rather than quietly reinterpreted. This is the half of the question the core
-> can hold; D10's signature still has to state it in the policy text.
+> can hold; D10's signature still has to state it in the policy text. The weekend
+> consequence is carried in [`../TRACEABILITY.md`](../TRACEABILITY.md)'s obligations
+> register as **unassigned** — it needs whoever will staff acknowledgement, and that
+> person does not exist yet.
 
 **Triage's four hours.** Appendix D.6 proposes targets for Act, Attend, Track* and
 Track only. The code gives Triage the same four hours as Act. Defensible — an
@@ -153,6 +156,11 @@ state the intent so W01 and W02 implement the same reading.
 > applied after the action has set the queue. A W02 that reads the action first and the
 > flag second does not implement this answer, and that is the specific way this answer
 > can be met in the core and missed in the product.
+>
+> **Owner: Milton Kenny Adedeme, named 2026-10-18.** The obligation is recorded in
+> [`../TRACEABILITY.md`](../TRACEABILITY.md)'s "Obligations with named owners" register,
+> because W02 does not exist yet and an obligation with no module to live in and no
+> person against it is the kind that survives a decision pack and dies before the code.
 
 ## 4. The six required elements, one at a time
 
@@ -453,7 +461,8 @@ remaining six are open.
 8. Does the EPSS 48-hour limit also govern the scanner advisory DB once D04 selects one,
    or does that input get its own limit? **Answered: its own limit — `EPSS_FRESHNESS`
    bounds the EPSS reading only, as the code has it, and the advisory DB's limit is a
-   separate number D04 owes D10 (§9.5).**
+   separate number D04 owes D10 (§9.5), carried as **unassigned** in
+   [`../TRACEABILITY.md`](../TRACEABILITY.md)'s obligations register.**
 9. Who must be named as an incident contact before an authorization is valid, and what
    happens when a named contact does not answer?
 10. Where does the maintenance window live — authorization profile, egress boundary, or

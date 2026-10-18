@@ -100,6 +100,18 @@ that wrong inference before the owner corrected it. **The separation evidence in
 repository therefore rests on a verbal attribution, not on anything GitHub can show.**
 D01 is where that attribution becomes a recorded appointment or stops being relied on.
 
+**Update, later the same day.** The table above was measured on the morning of
+2026-10-18. Two further pull requests merged that afternoon and the counts are now
+**16 of 16** author-never-approved, **0 of 16** merged without an approving review, and
+still **1 of 16** where the merger was not among the approvers. The second of the two is
+the one worth recording: **PR #16 — this pack — was the first change in the repository's
+history merged under enforced branch protection** (§4), and its review history reads
+`APPROVED`, then `DISMISSED`, then `APPROVED` again. The dismissal was not a reviewer
+changing their mind; it was `dismiss_stale_reviews` firing when the pack was amended after
+approval, exactly as configured. The reviewer re-read and re-approved, and merged it
+himself. That is the control working end to end, on its first use, on the document that
+describes it.
+
 **Collaborator permissions are at their floor.** `SageCarter98` holds admin as the owner;
 `kenAddme` holds write (pull, push, triage). Write is enough to review, approve and
 merge and cannot change settings, secrets or collaborators, so the reviewer holds exactly
