@@ -341,7 +341,10 @@ class TestOverrides:
         """U06's priority floor."""
         computed = decide(now, score=9.0, context=KNOWN)
         _, decision = apply_override(
-            computed, self.override(now, override_to=Action.TRACK), KNOWN, now=now
+            computed,
+            self.override(now, computed=Action.ACT, override_to=Action.TRACK),
+            KNOWN,
+            now=now,
         )
         assert R.PRIORITY_FLOOR_EXCEPTION_REQUIRED in decision.reasons
 
@@ -359,6 +362,7 @@ class TestOverrides:
             computed,
             self.override(
                 now,
+                computed=Action.ACT,
                 override_to=Action.TRACK,
                 exception_approved_by="executive.authority",
             ),
@@ -376,12 +380,6 @@ class TestOverrides:
         assert decision.allowed
         assert effective.action is Action.TRACK
 
-    @pytest.mark.parametrize("missing", ["reviewer", "reason", "evidence_reference"])
-    def test_an_override_requires_reviewer_reason_and_evidence(self, now, missing):
-        computed = decide(now, score=9.0)
-        _, decision = apply_override(computed, self.override(now, **{missing: ""}), QUIET, now=now)
-        assert R.DISPOSITION_REVIEWER_REQUIRED in decision.reasons
-
     def test_an_override_cannot_rewrite_the_imported_observation(self, now):
         """U06: overrides never permanently rewrite imported observations."""
         computed = decide(now, score=9.0)
@@ -389,3 +387,97 @@ class TestOverrides:
         assert computed.action is Action.ATTEND
         assert effective is not computed
         assert effective.severity_score == computed.severity_score
+
+    # -- D10 §5: the three override gaps the D10 probe measured ---------------
+
+    def test_triage_is_below_the_attend_floor(self, now):
+        """D10 §5(a): moving a floored finding to "we do not know" is a downgrade."""
+        computed = decide(now, score=9.0, context=KNOWN)
+        effective, decision = apply_override(
+            computed,
+            self.override(now, computed=Action.ACT, override_to=Action.TRIAGE),
+            KNOWN,
+            now=now,
+        )
+        assert R.PRIORITY_FLOOR_EXCEPTION_REQUIRED in decision.reasons
+        assert effective.action is Action.ACT
+
+    def test_an_approved_exception_permits_a_move_to_triage(self, now):
+        computed = decide(now, score=9.0, context=KNOWN)
+        effective, decision = apply_override(
+            computed,
+            self.override(
+                now,
+                computed=Action.ACT,
+                override_to=Action.TRIAGE,
+                exception_approved_by="executive.authority",
+            ),
+            KNOWN,
+            now=now,
+        )
+        assert decision.allowed
+        assert effective.action is Action.TRIAGE
+
+    def test_an_override_authored_under_a_retired_policy_does_not_apply(self, now):
+        """D10 §5(b): a recorded policy_version is compared, not just retained."""
+        computed = decide(now, score=9.0)
+        effective, decision = apply_override(
+            computed,
+            self.override(now, policy_version="seal-priority-retired-v0"),
+            QUIET,
+            now=now,
+        )
+        assert R.OVERRIDE_POLICY_VERSION_STALE in decision.reasons
+        assert effective.action is Action.ATTEND
+
+    def test_an_approved_exception_does_not_revive_a_retired_policy_version(self, now):
+        computed = decide(now, score=9.0, context=KNOWN)
+        _, decision = apply_override(
+            computed,
+            self.override(
+                now,
+                computed=Action.ACT,
+                override_to=Action.TRACK,
+                policy_version="seal-priority-retired-v0",
+                exception_approved_by="executive.authority",
+            ),
+            KNOWN,
+            now=now,
+        )
+        assert R.OVERRIDE_POLICY_VERSION_STALE in decision.reasons
+
+    def test_the_policy_version_checked_against_can_be_named(self, now):
+        """After D10 approves a version, overrides are read against that one."""
+        computed = decide(now, score=9.0)
+        effective, decision = apply_override(
+            computed,
+            self.override(now, policy_version="seal-priority-approved-v1"),
+            QUIET,
+            now=now,
+            active_policy_version="seal-priority-approved-v1",
+        )
+        assert decision.allowed
+        assert effective.action is Action.TRACK_STAR
+
+    def test_an_override_recording_the_wrong_old_outcome_does_not_apply(self, now):
+        """D10 §5(c): the recorded old outcome is evidence, not an assertion."""
+        computed = decide(now, score=9.0)
+        effective, decision = apply_override(
+            computed, self.override(now, computed=Action.TRACK), QUIET, now=now
+        )
+        assert R.OVERRIDE_COMPUTED_MISMATCH in decision.reasons
+        assert effective.action is Action.ATTEND
+
+    @pytest.mark.parametrize(
+        ("missing", "expected"),
+        [
+            ("reviewer", "DISPOSITION_REVIEWER_REQUIRED"),
+            ("reason", "OVERRIDE_REASON_REQUIRED"),
+            ("evidence_reference", "OVERRIDE_EVIDENCE_REQUIRED"),
+        ],
+    )
+    def test_each_missing_override_field_names_itself(self, now, missing, expected):
+        """D10 §9.4: a missing evidence reference must not report as a missing reviewer."""
+        computed = decide(now, score=9.0)
+        _, decision = apply_override(computed, self.override(now, **{missing: ""}), QUIET, now=now)
+        assert decision.reasons == (getattr(R, expected),)

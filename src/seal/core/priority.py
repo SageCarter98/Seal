@@ -239,9 +239,16 @@ def prioritize(
 #: impact is known, unless an approved exception is recorded (spec Section 6).
 PRIORITY_FLOOR = Action.ATTEND
 
+#: Urgency order, and the only place the floor's reach is stated. ``TRIAGE``
+#: ranks *below* ``ATTEND``: moving a floored finding to "we do not know"
+#: releases the Attend commitment, so it needs the same approved exception as a
+#: move to Track. It still ranks above ``TRACK_STAR`` because Triage carries an
+#: acknowledgement target and Track* does not. D10 owns this ordering
+#: (``D10_operations_policy.md`` §11 Q2); changing it is a policy change and
+#: must bump ``POLICY_VERSION``.
 _RANK = {
-    Action.ACT: 4,
-    Action.ATTEND: 3,
+    Action.ACT: 5,
+    Action.ATTEND: 4,
     Action.TRIAGE: 3,
     Action.TRACK_STAR: 2,
     Action.TRACK: 1,
@@ -275,23 +282,59 @@ class Override:
 
 
 def apply_override(
-    priority: Priority, override: Override | None, context: Context, *, now: datetime
+    priority: Priority,
+    override: Override | None,
+    context: Context,
+    *,
+    now: datetime,
+    active_policy_version: str = POLICY_VERSION,
 ) -> tuple[Priority, Decision]:
     """Apply an override if it is valid, and say why when it is not.
 
-    Returns the effective priority alongside the decision. An expired override
-    does not just stop applying: the recalculated outcome comes back with
-    ``OVERRIDE_EXPIRED`` so the escalation U06 requires is visible rather than
-    silent.
+    Returns the effective priority alongside the decision. A rejected override
+    does not just stop applying: the recalculated outcome comes back with the
+    reason, so the escalation U06 requires is visible rather than silent.
+
+    Every field Appendix D.6 requires an override to retain is also read here.
+    The two that are easy to retain and forget to check are the policy version
+    and the recorded old outcome:
+
+    * ``policy_version`` must match ``active_policy_version``. An override is a
+      judgement made under one policy; when that policy is retired the
+      judgement lapses rather than silently carrying into the next one. Expiry
+      does not cover this, because a policy change is not a date.
+    * ``computed`` must match the outcome actually being overridden, which makes
+      the recorded old outcome evidence rather than an assertion by whoever
+      built the override.
     """
     if override is None:
         return priority, allow()
 
-    if not override.reviewer or not override.reason or not override.evidence_reference:
+    if not override.reviewer:
         return priority, deny(R.DISPOSITION_REVIEWER_REQUIRED)
+    if not override.reason:
+        return priority, deny(R.OVERRIDE_REASON_REQUIRED)
+    if not override.evidence_reference:
+        return priority, deny(R.OVERRIDE_EVIDENCE_REQUIRED)
 
     if not override.is_active(now):
         return priority, deny(R.OVERRIDE_EXPIRED, override_id=override.override_id)
+
+    if override.policy_version != active_policy_version:
+        return priority, deny(
+            R.OVERRIDE_POLICY_VERSION_STALE,
+            override_id=override.override_id,
+            override_policy_version=override.policy_version,
+            active_policy_version=active_policy_version,
+        )
+
+    if override.computed is not priority.action:
+        return priority, deny(
+            R.OVERRIDE_COMPUTED_MISMATCH,
+            override_id=override.override_id,
+            recorded=override.computed.value,
+            computed=priority.action.value,
+        )
 
     floor_applies = bool(context.known_exploitation) or bool(context.serious_impact)
     below_floor = _RANK[override.override_to] < _RANK[PRIORITY_FLOOR]

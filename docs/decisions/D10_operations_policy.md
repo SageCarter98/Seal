@@ -3,8 +3,11 @@
 **Decision pack. Nothing here is a decision, and nothing here approves a priority
 policy.** D10 belongs to the security lead and the service owner. This pack prepares
 its six required elements, reports what the decision core already runs as a *candidate*
-policy, and reports four numbers and three override gaps where the built behaviour and
-the documented proposal are not the same thing. Every measurement below comes from
+policy, and reports four numbers where the built behaviour and the documented proposal
+are not the same thing. It also reported three override controls the documents require
+and the core did not check; those were implemented on 2026-10-18 at the owner's
+instruction, and §5 records the three provisional answers now running in code and what
+each still needs from D10. Every measurement below comes from
 `tools/d10_priority_probe.py` running the real `priority.py`.
 
 | | |
@@ -177,69 +180,111 @@ whenever a legal duty is undetermined. Every one of them is a flag. None has a
 recipient, a route or a clock — and the clock is the part that cannot be written here,
 because an escalation path with no time limit escalates nothing.
 
-## 5. Three gaps between what an override records and what is checked
+## 5. Three override controls, measured as gaps and now enforced
 
 Appendix D.6 requires every override to retain "old/new outcome, policy version, named
 reviewer, reason, evidence, creation time and expiry". `Override` retains every field in
-that list. Two of them — the old outcome and the policy version — are never read by
-`apply_override`; and the field that *is* read against the Attend floor is ranked so
-that one downgrade passes. Probe section 5 demonstrates all three.
+that list. When this pack first measured `apply_override`, two of them — the old outcome
+and the policy version — were never read, and the field that *was* read against the
+Attend floor was ranked so that one downgrade passed. **All three are now checked**, at
+the owner's instruction on 2026-10-18, test-first, in the same branch as this pack.
+Probe section 5 prints the three denials.
 
-**(a) The floor stops at Track, not at Triage.** `_RANK` gives Triage and Attend the
-same rank, so `apply_override` does not treat Triage as below the Attend floor:
+What that changes about this pack: §5 no longer reports gaps for D10 to rule on from a
+clean slate. It reports three *provisional answers* now running in code, each of which
+D10 may ratify or reverse. The questions in §11 stay open; what has changed is that the
+code now has a stated position on them instead of an unexamined one, and each position
+sits in one place so reversing it is a small edit plus a `POLICY_VERSION` bump.
+
+**(a) The floor now reaches Triage.** `_RANK` previously gave Triage and Attend the same
+rank, so a known-exploitation Act finding could be moved to "we do not know" with no
+approved exception. Triage now ranks below Attend and above Track\*:
 
 ```
-Act -> Triage, no exception   -> Triage   PERMIT
-Act -> Track,  no exception   -> Act      DENY ('PRIORITY_FLOOR_EXCEPTION_REQUIRED',)
+Act -> Triage, no exception          -> Act      DENY ('PRIORITY_FLOOR_EXCEPTION_REQUIRED',)
+Act -> Triage, exception approved    -> Triage   PERMIT
 ```
 
-A known-exploitation finding can be moved to "we do not know" with no approved
-exception, and Triage's four-hour target then applies — so it is not a parking space,
-and the equal rank is arguably correct. But it is reachable, undocumented, and the one
-route that gets a finding off Act without the exception the baseline requires. D10
-should say whether Triage sits below the floor or beside it. `tests/test_priority.py`
-covers the Track and Track\* downgrades and not this one.
+**The provisional answer is "below the floor, but on Act's clock".** Triage keeps its
+four-hour acknowledgement target, so this does not turn Triage into a parking space; it
+says that releasing an Attend commitment by declaring the context unknown is a downgrade
+and needs the same named exception as any other. §11 Q2 is still the security lead's to
+settle, and the counter-argument in favour of the old equal rank — that Triage is more
+urgent than Track\* and therefore not really "below" anything — is recorded here rather
+than discarded.
 
-**(b) An override's `policy_version` is recorded and not compared.** An override
-authored under a retired policy still applies, and the resulting outcome is stamped
-with the *current* version:
+**(b) An override's `policy_version` is now compared with the active policy.** An
+override authored under a retired policy lapses, and the computed outcome comes back in
+its place with a reason code rather than the override applying silently:
 
 ```
 override.policy_version -> 'seal-priority-retired-v0'
-outcome.policy_version  -> 'seal-priority-proposal-v1'   PERMIT
+active policy version   -> 'seal-priority-proposal-v1'
+decision                -> DENY ('OVERRIDE_POLICY_VERSION_STALE',)   effective: Act
 ```
 
-This is the one that matters most for D10 specifically, because version-stamping is the
+This is the one that mattered most for D10 specifically, because version-stamping is the
 mechanism D10's own approval depends on. The day the candidate becomes
-`seal-priority-approved-v1`, every override reasoned under the proposal keeps applying
-and keeps looking current. Expiry limits the damage — an override must expire — but
-expiry is time-based and a policy change is not.
+`seal-priority-approved-v1`, every override reasoned under the proposal would otherwise
+keep applying and keep looking current; expiry does not cover it, because a policy change
+is not a date. **The provisional answer to §11 Q4 is "lapse, visibly"** — the deny path
+returns the recomputed outcome, which is the same escalation route an expired override
+takes. The alternative D10 may prefer — survive with an escalation flag — is a different
+decision, not a different implementation of this one.
 
-**(c) An override's `computed` field — the "old outcome" — is recorded and not compared
-either.** An override claiming the computed action was Track still applies to a finding
-computed as Act. The recorded old outcome is therefore an assertion by whoever built
-the override, not evidence about what the policy actually produced.
+The version compared against is a parameter (`active_policy_version`, defaulting to the
+module's `POLICY_VERSION`), so when D10 approves a policy the caller can read overrides
+against the approved string without editing the core.
 
-**None of the three is a defect to fix before D10 decides.** No code here contradicts
-its own stated intent: the floor is implemented, the fields are retained, and nothing
-claims the two unread fields are checked. What each one exposes is an unanswered policy
-question, and each question belongs to the security lead rather than to whoever next
-edits `apply_override` — whether Triage is below the floor, what happens to an override
-when its policy version is retired, and whether a recorded old outcome must be verified
-rather than trusted. Once D10 answers them the code changes are small, and the
-assertions belong in W01's required test set, which U06 says Appendix D records.
+**(c) An override's `computed` field — the "old outcome" — is now compared** with the
+outcome actually being overridden. An override claiming the computed action was Track no
+longer applies to a finding computed as Act:
+
+```
+override.computed -> Track    real computed -> Act
+decision          -> DENY ('OVERRIDE_COMPUTED_MISMATCH',)   effective: Act
+```
+
+**The provisional answer to §11 Q5 is "evidence, not assertion".** The cost is real and
+worth stating: a recomputation that legitimately moves — new exposure information, a
+fresh EPSS reading — now invalidates an override that was correct when it was written,
+and the reviewer must re-author it against the new computed outcome. That is arguably the
+right behaviour, since the reasoning was about a different outcome, but it is a workflow
+consequence W01 and W02 inherit rather than a free control.
+
+**One further change came with these three**, from §9.4's "reason codes split" line: the
+single `DISPOSITION_REVIEWER_REQUIRED` guard that covered reviewer, reason and evidence
+is now three codes — `DISPOSITION_REVIEWER_REQUIRED`, `OVERRIDE_REASON_REQUIRED`,
+`OVERRIDE_EVIDENCE_REQUIRED` — so a denial names the field that is actually missing.
+
+**What this costs the pack, stated plainly.** §10's verification list originally included
+"confirm that the three §5 controls are still unenforced at signing time", and that line
+is now void; it has been replaced. A pack that enforces its own recommendation is
+deciding something a gate owns, which is why the house style for D06-D08 was to measure
+and not fix. The instruction to implement came from the project owner, who is one of the
+two roles §12 names — but **an instruction is not a signature**, and the code changes
+here are reviewable engineering changes, not a D10 decision. §12 stays unsigned, D10
+stays "Unconfirmed / Blocked", and `POLICY_VERSION` stays `seal-priority-proposal-v1`
+precisely because nothing here approves anything.
+
+`tests/test_priority.py` covers all three (52 tests, was 46): the Triage downgrade with
+and without an exception, the retired policy version with and without an approved
+exception, the named active version, the mismatched old outcome, and one case per split
+reason code. Two existing floor tests carried an override recording `Attend` as the old
+outcome while overriding an `Act` finding; those fixtures were invalid on their face
+under (c) and now record the real computed action.
 
 ## 6. What D10's approval would let W01 test
 
 W01's stated dependencies are "L04, D10", and its acceptance evidence is four lines.
-Three are already demonstrable against the candidate; the fourth has the §5(a) caveat.
+All four are now demonstrable against the candidate; the fourth became so with §5(a).
 
 | W01 acceptance line | Where it stands | Evidence |
 |---|---|---|
 | "Source scores/evidence never overwritten" | Demonstrable | Probe §1; `test_priority.py::TestSeparateDimensions` |
 | "Missing signals are unknown, not zero" | Demonstrable | Probe §2; `TestIncompleteContext`, `TestEpss` |
 | "Severe low-confidence findings enter urgent validation" | Demonstrable as a flag; the *entering* is W02's | Probe §2; §3 above |
-| "Priority floor exception is explicit" | Demonstrable for Track and Track\*; **not** for Triage | Probe §3, §5(a) |
+| "Priority floor exception is explicit" | Demonstrable for Track, Track\* and Triage | Probe §3, §5(a) |
 
 So D10's approval does not unblock W01 by supplying something W01 is missing. It
 unblocks W01 by converting numbers that currently run as a proposal into numbers W01
@@ -251,7 +296,8 @@ and a test that freezes an accident.
 **Decidable now, with no external dependency:** the tree's shape and order, the 0.10
 EPSS threshold, the 48-hour EPSS freshness limit, the four acknowledgement targets,
 calendar-versus-business days, Triage's target, whether Triage sits below the floor, the
-two unchecked override fields, and where the maintenance window is designed. That is
+two formerly unchecked override fields (now enforced provisionally — §5), and where the
+maintenance window is designed. That is
 most of the policy, and all of it is reviewable from this repository plus Appendix D.6.
 
 **Not decidable now:**
@@ -295,10 +341,14 @@ recorded as `seal-priority-approved-v1`:
    business days. If business, W01 owns the working-time calculation and the core's
    table becomes the input to it rather than the answer.
 3. **Amend** the policy to state Triage's target and Triage's position relative to the
-   Attend floor, rather than inheriting both from the code.
+   Attend floor, rather than inheriting both from the code. Triage is now *implemented*
+   as below the floor (§5(a)); stating it remains D10's act, and reversing it remains
+   D10's option.
 4. **Amend** the override rules to require that `policy_version` match the active policy
    and that `computed` match the recomputed outcome, with the reason codes split so a
-   missing evidence reference does not report as a missing reviewer.
+   missing evidence reference does not report as a missing reviewer. **All three parts of
+   this item are now implemented** (§5(b), §5(c)); what is outstanding is D10's
+   ratification of them and of the lapse-versus-escalate choice in §5(b).
 5. **Defer, with a recorded reason and a review date**: remediation deadlines (pending
    an asset-impact classification) and the non-EPSS freshness limit (pending D04).
 6. **Record** that the maintenance window is designed with the authorization profile and
@@ -317,8 +367,11 @@ lead and service owner may reject any part of it.
    quotations here come from a stdlib text extraction of
    `Seal_Integrated_Baseline_v1_6.docx`; headings and paragraph text extract reliably,
    but a table-formatting difference would not be visible in it.
-3. Confirm that the three §5 controls are still unenforced at signing time, and that
-   nothing has been changed to enforce them without a recorded decision.
+3. Confirm that the three §5 controls still behave as §5 describes at signing time, and
+   rule on each provisional answer explicitly — Triage below or beside the floor, a stale
+   policy version lapsing or escalating, a recorded old outcome verified or trusted. The
+   enforcement was added on instruction and without a gate decision (§5); signing §12
+   without ruling on all three would ratify by silence.
 4. Confirm with D04's owner whether a scanner has been selected, since the freshness
    deferral in §9.5 lapses the moment one is.
 5. Confirm the two accountable roles have accepted the assignment. Appendix E.3's
@@ -328,11 +381,13 @@ lead and service owner may reject any part of it.
 ## 11. Open questions for the security lead and service owner
 
 1. Calendar or business days for Attend and Track\*?
-2. Is Triage below the Attend floor, or beside it?
+2. Is Triage below the Attend floor, or beside it? *(Code now says below — §5(a).)*
 3. Does Triage keep four hours, or get its own target?
 4. Must an override's `policy_version` match the active policy — and if it does not,
-   does the override lapse, or does it survive with an escalation?
-5. Must an override's recorded old outcome be verified against a recomputation?
+   does the override lapse, or does it survive with an escalation? *(Code now requires
+   the match and lapses — §5(b).)*
+5. Must an override's recorded old outcome be verified against a recomputation? *(Code
+   now verifies it — §5(c).)*
 6. Does a Track\* outcome carrying `urgent_validation=True` satisfy "enter urgent
    validation immediately", or must the tree itself route such findings differently?
 7. Which asset-impact classification will remediation deadlines be written against, and
@@ -364,7 +419,9 @@ anyone's behalf.
 
 ## 13. Provenance and limits
 
-Drafted 2026-10-18 by Claude Opus 5 at the owner's instruction. Quotations come from
+Drafted 2026-10-18 by Claude Opus 5 at the owner's instruction, and amended the same
+day — also at the owner's instruction — after the three §5 controls were implemented;
+§5 records what changed and what it costs this pack. Quotations come from
 `Seal_Integrated_Baseline_v1_6.docx` (Appendix D.6, Appendix E.3, Appendix E.7 row W01,
 Appendix E.8 row H03, and the risk table at §18) and
 `Seal_Engineering_Specification_v1_6.docx` §6 — whose prioritization text is identical
