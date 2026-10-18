@@ -153,10 +153,32 @@ made public; it was, on 2026-10-18. The same request now answers:
 {"message":"Branch not protected","status":"404"}
 ```
 
-404 rather than 403 is the whole point: protection is now *available and unconfigured*
-instead of unavailable. **Item #117 is therefore closable by configuration for the first
-time, and is not yet closed** — nothing is configured, so `main` still accepts a direct
-push and an unreviewed merge.
+404 rather than 403 was the whole point: protection became *available and
+unconfigured* instead of unavailable. **It was then configured, the same day, at the
+owner's direction**:
+
+```
+approving reviews         -> 1        force pushes allowed      -> False
+stale reviews dismissed   -> True     branch deletion allowed   -> False
+conversations resolved    -> True     rules bind administrators -> True
+branch up to date         -> True
+required checks           -> test (py3.10), test (py3.13), purity boundary,
+                             no committed credentials
+```
+
+`main` no longer accepts a direct push or an unreviewed merge, and tracker item **#117**
+is recorded Complete against this configuration.
+
+**The line that decides whether the rest means anything is the last one.** Every change
+in §2 was authored by the account that owns the repository; an owner exempt from the
+rules can merge past all of them, so `enforce_admins` is what separates enforcement from
+decoration here. It is set, which has a consequence the owner accepted knowingly: **he
+can no longer merge his own pull requests**, including the two open as this was written.
+Protection remains reversible — an administrator can lift it — but lifting it is a
+recorded settings change rather than a quiet unreviewed merge, and that difference is
+the control. §5's missing deputy is what makes the distinction load-bearing rather than
+theoretical: with one reviewer and no deputy, the pressure to lift protection arrives
+the first time he is unavailable.
 
 **What the disclosure cost, recorded here because a decision's price belongs in the
 record.** Publication is permanent in effect: clones, caches, forks and scraped copies
@@ -249,9 +271,9 @@ arrangement, not the weaker one; it is recorded for completeness.
 **Decidable now, with no external dependency:** all four appointments, including the
 acceptance authority, since §5 shows a two-person set satisfying §3.3 for Class A
 without an exception; the scope of the review (what the reviewer reviews for and may
-refuse); the review period and its revisit date; and the branch-protection
-configuration itself, which §4 shows is now available rather than blocked — what
-settings to require, and whether they bind the owner too.
+refuse); and the review period and its revisit date. The branch-protection question
+that sat here is closed: §4 records what was configured, including that the rules bind
+the owner's admin account.
 
 **Not decidable now:**
 
@@ -307,13 +329,13 @@ recommendation in §9 is taken, D11 inherits two concrete line items from it.
    compensating-assurance clause — the arrangement needs no exception, and for Class A
    that clause would escalate to an Executive Authority chaired by the same person who
    authored every change.
-6. **Configure branch protection on `main` now**, rather than recording the exception
-   this pack's first draft recommended. §4's obstacle is gone: the repository is public,
-   protection returns 404 rather than 403, and #117 is closable by configuration. Until
-   it is configured the exception is still the honest record, so this item is the
-   shortest-lived recommendation in the pack — require a pull request, at least one
-   approving review, the four existing status checks, and no force-push or deletion, and
-   state whether the rules bind the owner's admin account as well.
+6. ~~Configure branch protection on `main`.~~ **Done, 2026-10-18** — the
+   shortest-lived recommendation in the pack, superseded within hours of being written.
+   §4 records the configuration: one approving review, the four existing status checks,
+   stale reviews dismissed, no force-push or deletion, and the rules binding the owner's
+   admin account. What remains for D01 is the decision this created rather than solved:
+   **who merges when the single reviewer is unavailable**, given that the honest options
+   are waiting or lifting protection, and §9.5 is where that gap is recorded.
 7. **Hand D11 one line item**: deputy-reviewer effort. The platform cost the first
    draft listed beside it was paid in disclosure instead of money (§4).
 
@@ -360,14 +382,18 @@ Authority may reject any part of it.
 5. For how long does each appointment run, and what triggers a revisit?
 6. Is the sponsor a distinct appointment here, or does the Project Authority hold it?
 7. ~~Is unenforceable branch protection accepted as a time-bound exception, or funded as
-   a platform change?~~ **Resolved 2026-10-18 by publication (§4): neither. What is open
-   is the configuration — which rules, and whether they bind the owner's admin account.
-   Until something is configured, review remains enforced by practice alone.**
+   a platform change?~~ **Resolved 2026-10-18: neither. The repository was published and
+   protection configured to bind the owner's admin account too (§4). The question that
+   replaces it is §11 Q10's, now sharper — with protection binding everyone and no
+   deputy, an unavailable reviewer stops merges until someone lifts protection.**
 8. Does review depth get a stated expectation (a size limit per pull request, a required
    checklist), or does it stay the reviewer's judgement?
 9. What happens to work already merged under a practice that predates the appointments —
    is it re-reviewed, accepted as-is, or accepted with a recorded limitation?
-10. Who deputises when the single independent reviewer is unavailable?
+10. Who deputises when the single independent reviewer is unavailable — and until
+    someone does, who holds the authority to lift branch protection, on what record, and
+    for how long? §4's configuration turned this from a staffing preference into the
+    project's only route to merging in that situation.
 
 ## 12. Decision record — unsigned
 

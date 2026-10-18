@@ -35,9 +35,13 @@ Its sharpest output is the one that is not about people at all, and it changed o
 Pro or make this repository public` — protection was not switched off, it was unavailable
 for a private repository on this plan, so the review every merged change carries could
 not be *required* by any setting here. The owner resolved that by making the repository
-public the same day, and the probe now prints `404 Branch not protected`: available,
-unconfigured. The 403-versus-404 distinction is worth keeping in the script, because the
-two look alike in a summary and mean opposite things about whether tracker item #117 can
+public the same day and configuring protection, so the probe now prints the rules
+themselves — required reviews and checks, force-push and deletion, and whether the rules
+bind administrators, which is the line that decides whether the others mean anything when
+the repository owner authored every change.
+
+It prints three states, not two, because `403` (cannot exist) and `404` (exists, nothing
+set) look alike in a summary and mean opposite things about whether tracker item #117 can
 be closed at all.
 
 ## `d04_identity_probe.py`

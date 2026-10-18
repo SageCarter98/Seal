@@ -140,15 +140,17 @@ lives in the `pm-sdlc-tracker` database for this project, not in this
 repository, and no code change here can record a gate decision.
 
 Every change reaches `main` through a pull request approved by someone other
-than its author — fourteen of fourteen so far. **That is still a practice
-rather than an enforced rule.** While this repository was private, branch
-protection could not be enabled at all (`403 Upgrade to GitHub Pro or make
-this repository public`); it was made public on 2026-10-18 at the owner's
-direction, so protection now returns `404 Branch not protected` — available,
-and not yet configured. Nothing therefore requires the review that every
-merged change carries. No appointment has been recorded either: the reviewer
-has no stated scope or review period, because that is D01's decision and D01
-is unsigned.
+than its author — fourteen of fourteen, by practice, and **now by enforcement
+as well**. While this repository was private, branch protection could not be
+enabled at all (`403 Upgrade to GitHub Pro or make this repository public`); it
+was made public on 2026-10-18 at the owner's direction and protection was
+configured the same day: one approving review, the four CI checks required,
+stale reviews dismissed, no force-push or deletion, and the rules binding the
+owner's admin account — so nobody here can merge their own work unreviewed.
+
+The appointments behind that review are still unrecorded: the reviewer has no
+stated scope or review period, and there is no deputy, because those are D01's
+decisions and D01 is unsigned.
 [`docs/decisions/D01_appointments_and_separation.md`](docs/decisions/D01_appointments_and_separation.md)
 measures all of it; `tools/d01_review_separation_probe.py` is where the numbers
 come from.

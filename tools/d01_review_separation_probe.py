@@ -143,8 +143,30 @@ print("=" * 78)
 code, out, err = gh("api", f"repos/{REPO}/branches/main/protection")
 message = err or out
 if code == 0:
-    print("   main carries branch protection. Settings as reported:")
-    print("   " + out[:900])
+    rules = json.loads(out)
+    checks = rules.get("required_status_checks") or {}
+    reviews = rules.get("required_pull_request_reviews") or {}
+
+    def flag(section: str) -> bool:
+        return bool((rules.get(section) or {}).get("enabled"))
+
+    print("   main is PROTECTED. What it now requires:")
+    print(f"     approving reviews         -> {reviews.get('required_approving_review_count', 0)}")
+    print(f"     stale reviews dismissed   -> {reviews.get('dismiss_stale_reviews')}")
+    print(f"     conversations resolved    -> {flag('required_conversation_resolution')}")
+    print(f"     branch up to date         -> {checks.get('strict')}")
+    for context in checks.get("contexts", []):
+        print(f"     required check            -> {context}")
+    print(f"     force pushes allowed      -> {flag('allow_force_pushes')}")
+    print(f"     branch deletion allowed   -> {flag('allow_deletions')}")
+    print(f"     rules bind administrators -> {flag('enforce_admins')}")
+    print()
+    print("   The last line is the one that decides whether any of the others mean")
+    print("   anything here. Every change in section 1 was authored by the account")
+    print("   that owns the repository, and an owner not bound by the rules can merge")
+    print("   past all of them. It stays reversible either way: an administrator can")
+    print("   lift protection, which is a recorded settings change rather than a quiet")
+    print("   unreviewed merge, and that difference is the control.")
 elif "Upgrade to GitHub Pro" in message:
     print("   Branch protection is UNAVAILABLE. gh reported:")
     print(f"     {message[:300]}")
