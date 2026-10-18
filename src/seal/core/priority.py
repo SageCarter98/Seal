@@ -29,7 +29,10 @@ from .decision import Decision, allow, deny
 #: outcomes remain attributable to the policy that produced them.
 POLICY_VERSION = "seal-priority-proposal-v1"
 
-#: Both pending D10 security-lead review (spec Section 6).
+#: Both pending D10 security-lead review (spec Section 6). The freshness limit bounds
+#: the EPSS reading and nothing else: a scanner advisory DB gets its own limit once D04
+#: selects a scanner, rather than this one stretching to cover it
+#: (``D10_operations_policy.md`` §11 Q8, answered 2026-10-18).
 EPSS_ACT_THRESHOLD = 0.10
 EPSS_FRESHNESS = timedelta(hours=48)
 
@@ -59,6 +62,14 @@ class Confidence(str, Enum):
 
 #: Proposed acknowledgement targets (spec Section 6). Workflow proposals, not
 #: legal deadlines, and not a substitute for institutional service targets.
+#:
+#: **Calendar days, deliberately** (``D10_operations_policy.md`` §11 Q1, answered
+#: 2026-10-18): Appendix D.6's "business day" wording is amended to calendar rather than
+#: this table moving behind a working-time calculation, so a target can fall on a
+#: weekend -- a Friday ``ATTEND`` finding comes due Saturday. ``TRIAGE``'s four hours is
+#: an addition to Appendix D.6's four-action table, ratified on the same date (§11 Q3):
+#: a finding nobody can yet classify should not wait longer than one already known to be
+#: urgent. Both are policy, so changing either must bump ``POLICY_VERSION``.
 ACKNOWLEDGEMENT_TARGETS: dict[Action, timedelta | None] = {
     Action.ACT: timedelta(hours=4),
     Action.ATTEND: timedelta(days=1),
@@ -70,6 +81,15 @@ ACKNOWLEDGEMENT_TARGETS: dict[Action, timedelta | None] = {
 #: Severity at or above which a low-confidence finding enters urgent validation
 #: rather than waiting (spec Section 6: "Low-confidence High/Critical findings
 #: enter urgent validation immediately").
+#:
+#: The number itself is still open: 7.0 is the CVSS v4 floor of High, and D04 has not
+#: selected the adapter whose band it translates (``D10_operations_policy.md`` §3).
+#: What is settled is the *shape* (§11 Q6, answered 2026-10-18): urgency from weak
+#: evidence stays a flag beside the outcome rather than a branch within the tree, which
+#: keeps it a separate dimension in the way spec Section 6 requires of severity, EPSS
+#: and confidence. That makes ``Priority.urgent_validation`` an entry condition W02 must
+#: honour in its own right -- a queue that reads ``action`` first and the flag second
+#: does not implement "enter urgent validation immediately".
 URGENT_VALIDATION_SEVERITY = 7.0
 
 
@@ -239,9 +259,16 @@ def prioritize(
 #: impact is known, unless an approved exception is recorded (spec Section 6).
 PRIORITY_FLOOR = Action.ATTEND
 
+#: Urgency order, and the only place the floor's reach is stated. ``TRIAGE``
+#: ranks *below* ``ATTEND``: moving a floored finding to "we do not know"
+#: releases the Attend commitment, so it needs the same approved exception as a
+#: move to Track. It still ranks above ``TRACK_STAR`` because Triage carries an
+#: acknowledgement target and Track* does not. D10 owns this ordering
+#: (``D10_operations_policy.md`` §11 Q2); changing it is a policy change and
+#: must bump ``POLICY_VERSION``.
 _RANK = {
-    Action.ACT: 4,
-    Action.ATTEND: 3,
+    Action.ACT: 5,
+    Action.ATTEND: 4,
     Action.TRIAGE: 3,
     Action.TRACK_STAR: 2,
     Action.TRACK: 1,
@@ -275,23 +302,59 @@ class Override:
 
 
 def apply_override(
-    priority: Priority, override: Override | None, context: Context, *, now: datetime
+    priority: Priority,
+    override: Override | None,
+    context: Context,
+    *,
+    now: datetime,
+    active_policy_version: str = POLICY_VERSION,
 ) -> tuple[Priority, Decision]:
     """Apply an override if it is valid, and say why when it is not.
 
-    Returns the effective priority alongside the decision. An expired override
-    does not just stop applying: the recalculated outcome comes back with
-    ``OVERRIDE_EXPIRED`` so the escalation U06 requires is visible rather than
-    silent.
+    Returns the effective priority alongside the decision. A rejected override
+    does not just stop applying: the recalculated outcome comes back with the
+    reason, so the escalation U06 requires is visible rather than silent.
+
+    Every field Appendix D.6 requires an override to retain is also read here.
+    The two that are easy to retain and forget to check are the policy version
+    and the recorded old outcome:
+
+    * ``policy_version`` must match ``active_policy_version``. An override is a
+      judgement made under one policy; when that policy is retired the
+      judgement lapses rather than silently carrying into the next one. Expiry
+      does not cover this, because a policy change is not a date.
+    * ``computed`` must match the outcome actually being overridden, which makes
+      the recorded old outcome evidence rather than an assertion by whoever
+      built the override.
     """
     if override is None:
         return priority, allow()
 
-    if not override.reviewer or not override.reason or not override.evidence_reference:
+    if not override.reviewer:
         return priority, deny(R.DISPOSITION_REVIEWER_REQUIRED)
+    if not override.reason:
+        return priority, deny(R.OVERRIDE_REASON_REQUIRED)
+    if not override.evidence_reference:
+        return priority, deny(R.OVERRIDE_EVIDENCE_REQUIRED)
 
     if not override.is_active(now):
         return priority, deny(R.OVERRIDE_EXPIRED, override_id=override.override_id)
+
+    if override.policy_version != active_policy_version:
+        return priority, deny(
+            R.OVERRIDE_POLICY_VERSION_STALE,
+            override_id=override.override_id,
+            override_policy_version=override.policy_version,
+            active_policy_version=active_policy_version,
+        )
+
+    if override.computed is not priority.action:
+        return priority, deny(
+            R.OVERRIDE_COMPUTED_MISMATCH,
+            override_id=override.override_id,
+            recorded=override.computed.value,
+            computed=priority.action.value,
+        )
 
     floor_applies = bool(context.known_exploitation) or bool(context.serious_impact)
     below_floor = _RANK[override.override_to] < _RANK[PRIORITY_FLOOR]

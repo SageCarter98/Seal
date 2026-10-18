@@ -120,14 +120,16 @@ python tools/d10_priority_probe.py
 Needs no fixtures and asserts nothing. Its section 4 prints the six elements D10's
 evidence line requires and which of them the core can express, reading the live module
 rather than this description — one is expressed, four are partial and one is absent.
-Its section 5 demonstrates three gaps between what an `Override` records and what
-`apply_override` checks: an override to Triage clears the Attend floor without an
-approved exception, a retired `policy_version` still applies, and the recorded old
-outcome is never compared to the recomputed one.
+Its section 5 prints the three override controls that the pack first measured as gaps
+and that `apply_override` now checks: a move to Triage is below the Attend floor and
+needs the same approved exception as a move to Track, an override whose
+`policy_version` is not the active one lapses, and an override whose recorded old
+outcome is not the recomputed one does not apply.
 
-**None of those three is reported as a defect to fix.** Each resolves to a policy
-choice the security lead owns, which is why the probe prints the behaviour and the
-decision pack asks the question rather than either of them changing `apply_override`.
+**Each of the three encodes a policy answer the security lead may still change.** The
+enforcement was added at the owner's instruction on 2026-10-18, after the pack measured
+the gaps; §5 and §11 of that pack record which answer is encoded and which question
+remains open, and `POLICY_VERSION` must bump if D10 answers any of them differently.
 
 **The thresholds it prints are a proposal, not a policy.** `POLICY_VERSION` says
 `seal-priority-proposal-v1` and baseline U06 says the candidate tree, threshold,

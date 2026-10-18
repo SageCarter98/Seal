@@ -4,7 +4,8 @@
 checkable today. The ordered tree in baseline Appendix D.6 is implemented and every
 branch fires. Unknown, stale and future-dated signals route to Triage rather than to
 the least urgent branch, which is what that section requires of them. The Attend floor
-holds against a downgrade -- except along one path, which section 5 below demonstrates.
+holds along every downgrade path, the move to Triage included, and the two override
+fields that were once retained-but-unread are now compared; section 5 prints all three.
 And of D10's six required elements, one is expressed, four are partial and one is
 absent; section 4 prints which is which rather than asserting it.
 
@@ -206,10 +207,9 @@ for label, ov in [
     show(label, ov)
 
 print()
-print("  Two of those rows deserve a second look. A missing reason and a missing")
-print("  evidence reference both deny as DISPOSITION_REVIEWER_REQUIRED, because")
-print("  one guard covers all three fields. The denial is right; the reason code")
-print("  tells the reviewer to supply something they already supplied.")
+print("  Each missing field now names itself -- DISPOSITION_REVIEWER_REQUIRED,")
+print("  OVERRIDE_REASON_REQUIRED, OVERRIDE_EVIDENCE_REQUIRED -- so the denial")
+print("  tells the reviewer which of the three to supply.")
 
 print()
 print("=" * 78)
@@ -298,47 +298,59 @@ print("                                   recipient, no clock")
 print()
 
 print("=" * 78)
-print("5. Three gaps between what an override records and what is checked")
+print("5. The three override controls Appendix D.6 requires, now checked")
 print("=" * 78)
 print("   Appendix D.6 requires every override to retain \"old/new outcome, policy")
 print("   version, named reviewer, reason, evidence, creation time and expiry\".")
-print("   Every field in that list is retained. Two of them -- the old outcome")
-print("   and the policy version -- are never read by apply_override. And the")
-print("   field that is read against the floor is ranked so that one downgrade")
-print("   passes:")
+print("   Every field in that list is retained, and every field in that list is")
+print("   now read. These three rows were permits when the D10 pack measured")
+print("   them; each is a control the documents describe and apply_override")
+print("   previously recorded without comparing:")
 print()
 
-print("  (a) The floor stops at Track, not at Triage. Triage and Attend share a")
-print("      rank, so a known-exploitation Act finding can be moved to \"we do")
-print("      not know\" with no exception approved:")
+print("  (a) The floor reaches Triage. Triage ranks below Attend, so moving a")
+print("      known-exploitation Act finding to \"we do not know\" needs the same")
+print("      approved exception as moving it to Track:")
 show("Act -> Triage, no exception", override(Action.TRIAGE))
+show("Act -> Triage, exception approved",
+     override(Action.TRIAGE, exception_approved_by="ciso"))
 show("Act -> Track, no exception", override(Action.TRACK))
 print()
-print("  (b) An override's policy_version is recorded and not compared. One")
-print("      authored under a retired policy still applies, and the outcome is")
-print("      stamped with the current version either way:")
+print("  (b) An override's policy_version is compared with the active policy. One")
+print("      authored under a retired policy lapses rather than carrying forward,")
+print("      and the computed outcome comes back in its place:")
 stale = override(Action.TRACK, policy_version="seal-priority-retired-v0",
                  exception_approved_by="ciso")
 result, decision = apply_override(computed, stale, CTX, now=T0)
 print(f"      override.policy_version        -> {stale.policy_version!r}")
-print(f"      outcome.policy_version         -> {result.policy_version!r}")
+print(f"      active policy version          -> {POLICY_VERSION!r}")
 print(f"      decision                       -> "
-      f"{'PERMIT' if decision.allowed else 'DENY'}")
+      f"{'PERMIT' if decision.allowed else 'DENY ' + str(decision.reasons)}")
+print(f"      effective action               -> {result.action.value}")
+print("      The version checked against is a parameter, so once D10 approves a")
+print("      policy an override authored under that one is read against it:")
+fresh = override(Action.TRACK, policy_version="seal-priority-approved-v1",
+                 exception_approved_by="ciso")
+_, decision = apply_override(computed, fresh, CTX, now=T0,
+                             active_policy_version="seal-priority-approved-v1")
+print(f"      decision                       -> "
+      f"{'PERMIT' if decision.allowed else 'DENY ' + str(decision.reasons)}")
 print()
-print("  (c) An override's computed field -- the \"old outcome\" -- is recorded and")
-print(f"      not compared either. The real computed action is {computed.action.value}:")
+print("  (c) An override's computed field -- the \"old outcome\" -- is compared with")
+print("      the outcome actually being overridden, which makes it evidence rather")
+print(f"      than an assertion. The real computed action is {computed.action.value}:")
 mismatched = override(Action.ATTEND, computed=Action.TRACK)
 result, decision = apply_override(computed, mismatched, CTX, now=T0)
 print(f"      override.computed              -> {mismatched.computed.value}")
 print(f"      decision                       -> "
-      f"{'PERMIT' if decision.allowed else 'DENY'}, result "
+      f"{'PERMIT' if decision.allowed else 'DENY ' + str(decision.reasons)}, result "
       f"{result.action.value}")
 print()
-print("  None of the three contradicts a line of code. Each is a control the")
-print("  documents describe and the core does not yet enforce, and each resolves")
-print("  to a policy choice D10 owns: whether Triage sits below the floor, what")
-print("  happens to an override when the policy version it was reasoned under is")
-print("  retired, and whether a recorded old outcome is evidence or an assertion.")
+print("  Each of the three answers a policy question D10 owns, and each answer is")
+print("  visible in one place: Triage's rank in _RANK, the policy-version")
+print("  comparison and the old-outcome comparison in apply_override. A denial")
+print("  returns the computed outcome with its reason code rather than silently")
+print("  dropping the override, so the review is escalated rather than lost.")
 print()
 
 print("=" * 78)
