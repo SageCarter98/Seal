@@ -104,8 +104,8 @@ so write is also the collaborator ceiling — admin would require an organisatio
 repository.
 
 **A third account was invited on 2026-10-18**: `MiltonBello15`, at write, at the owner's
-direction, named by him as Milton. The invitation is **pending acceptance** at the time
-of writing, so the account can do nothing yet. Three things about it belong in this pack
+direction, named by him as **Milton Kenny Adedeme**. The invitation is **pending
+acceptance** at the time of writing, so the account can do nothing yet. Three things about it belong in this pack
 rather than in a commit message:
 
 - **It is not an appointment.** Write access is the permission to open, review, approve
@@ -114,13 +114,51 @@ rather than in a commit message:
   `../TRACEABILITY.md`, "Obligations with named owners"), which is a different thing from
   a D01 role with a scope and a review period.
 - **The attribution carries the same caveat as `kenAddme`'s.** That this account is
-  operated by a person called Milton is the owner's statement. Nothing in GitHub
-  corroborates it, and this pack does not infer a surname from a username.
+  operated by Milton Kenny Adedeme is the owner's statement, given on 2026-10-18.
+  Nothing in GitHub corroborates it.
 - **It changes the separation arithmetic, but only once he accepts and only if D01 says
   so.** §5 was written about two people. A third person with write on a public repository
   and no recorded scope is not yet an improvement to separation; it is one more account
   that can approve a pull request. What makes it an improvement is §12 naming what he
   may approve.
+
+**The three named individuals' names share components, and a Class A separation record
+has to address that rather than pass over it.** The people named in this pack are Freston
+Kenny Adedeme (owner, Project Authority, author of every change), Russell Kenny
+(independent reviewer, acceptance authority until Gate 4) and Milton Kenny Adedeme
+(deputy reviewer, acceptance authority from Gate 4). "Kenny" appears in all three and
+"Kenny Adedeme" in two.
+
+This pack draws no conclusion from that, and it is not drawing the inference it is
+careful elsewhere not to draw: shared name components are not evidence of a relationship,
+still less of one person, and an earlier session in this project recorded exactly that
+kind of inference about two accounts and was corrected by the owner. **What it does mean
+is that the relationships must be stated rather than left for a reader to guess**, for
+three reasons:
+
+1. **The framework's independence test is functional, not formal.** §14.1: "High-risk
+   deliverables require reviewers independent enough to challenge the delivery team."
+   §19.1: assurance must be "sufficiently independent for the reviewer to challenge
+   assumptions and report concerns without pressure." Neither bars a relative. Both ask a
+   question about pressure that a role title cannot answer and a surname cannot settle
+   either way.
+2. **A material conflict of interest is a mandatory escalation, not a private
+   judgement.** §12.2 lists "material conflict of interest, falsified evidence or
+   deliberate concealment of project status" among the immediate escalation triggers. The
+   way to comply is to record the relationships and the reasoning, so that if one is
+   material it escalates, and if none is, the record shows that was examined rather than
+   assumed.
+3. **The repository is public (§4).** Any reader can see the three names, the single
+   authoring account, and the fourteen approvals. A reader who forms their own view from
+   that is working from exactly the material this pack publishes; the only way the record
+   answers them is by stating the position.
+
+So §11 Q2 now asks for each named individual's relationship to the others, or an explicit
+statement that there is none, and §10 requires it recorded before §12 is signed. If the
+relationships are close, the answer is not necessarily a different appointment — a Class A
+project may keep a related reviewer where the Project Authority records why that person
+can still challenge and report without pressure, and what compensates. What it may not do
+is leave the question unanswered in a public governance record.
 
 ## 3. A practice is not an appointment
 
@@ -283,6 +321,14 @@ is compliant in both of its stages and strictly better in the second:
 | Nobody sole author, reviewer, tester *and* approver | Satisfied | Satisfied |
 | §5's own second point: reviewer and acceptance authority are one person | **Still true** | **Resolved** — the change-level check and the deliverable-level acceptance become two people |
 
+**What the tables above do not test.** Every provision in them is about *roles* — who
+approves, who accepts, who authored. §3.3 is silent on relatedness, so an arrangement can
+satisfy every row and still fail §14.1's "independent enough to challenge" test. §2's
+closing block is where that question lives, and the staged appointment makes it sharper
+rather than softer: from Gate 4 the acceptance authority is a person whose recorded name
+shares two components with the Project Authority's, and acceptance is the one judgement
+with no second pair of eyes behind it.
+
 **What the appointment fixes immediately:** §11 Q10's gap. An unavailable reviewer no
 longer leaves lifting branch protection as the only route to a merge, which was the
 pressure §4 created the moment the rules were set to bind everyone.
@@ -423,11 +469,17 @@ Authority may reject any part of it.
 3. Confirm the account-to-person attribution in §2 is still accurate, in writing, since
    the whole separation claim rests on it, nothing in GitHub can corroborate it, and the
    repository is now public (§4's closing paragraph).
-4. Check the D01 row and §15.3 against the approved `.docx` directly. The quotations here
+4. **Record each named individual's relationship to the others, or state explicitly that
+   there is none**, with the Project Authority's reasoning on whether any of them impairs
+   the independence §14.1 and §19.1 require. This is not optional for a Class A project
+   whose reviewer and future acceptance authority share name components with its Project
+   Authority, and §12.2 makes a material conflict an escalation rather than a judgement
+   anyone here makes privately. Do it before signing, not after a reader asks.
+5. Check the D01 row and §15.3 against the approved `.docx` directly. The quotations here
    come from a stdlib text extraction of `Seal_Integrated_Baseline_v1_6.docx`; headings
    and paragraph text extract reliably, but a table-formatting difference would not be
    visible in it.
-5. Confirm with D02's owner that Class A / Class 3 is still the operating assumption,
+6. Confirm with D02's owner that Class A / Class 3 is still the operating assumption,
    since §5's whole difficulty follows from it.
 
 ## 11. Open questions for the Project Authority
@@ -441,7 +493,12 @@ Authority may reject any part of it.
    matters, because §3.3's compensating-assurance route needs those to be distinguishable
    people.**
 2. Is the independent reviewer independent enough for Appendix E.3's purpose when the
-   account they review under is the company's own?
+   account they review under is the company's own — and **what is each named
+   individual's relationship to the others?** §14.1 and §19.1 set a functional test
+   ("independent enough to challenge", "without pressure") that a role title does not
+   answer; §2's closing block explains why the question is now unavoidable and §10.4
+   requires the answer before signing. An explicit "no relationship" is a complete
+   answer; silence is not.
 3. Is the reviewer and the acceptance authority being the same person accepted for a
    Class A / Class 3 project, given §3.3 permits it and §5's second point records
    what it concentrates? **Answered 2026-10-18: accepted until Gate 4, then separated —
@@ -512,7 +569,8 @@ Drafted 2026-10-18 by Claude Opus 5 at the owner's instruction. Quotations come 
 through a stdlib text extraction; the `.docx` file remains authoritative.
 
 The separation provisions quoted in §1 come from the KenAddme IT Links Project Management
-Framework v1.3 §3.3 and §3.4, and the assurance-funding line in §8 from the Software
+Framework v1.3 §3.3 and §3.4, the independence tests in §2 and §5 from its §14.1 and
+§19.1, the escalation trigger in §2 from its §12.2, and the assurance-funding line in §8 from the Software
 Development and Engineering Framework v1.4, both read from the Markdown working
 references at `~/.claude/frameworks/`; the approved `.docx` originals in that folder
 remain the controlled versions. These frameworks govern the project and are not part of
