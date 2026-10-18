@@ -265,15 +265,39 @@ people — it is that the arrangement has no slack, and slack is what D11 would 
 
 **The third collaborator invited on 2026-10-18 (§2) is the first slack this project has
 had, and it is not slack until D01 uses it.** An accepted invitation gives Milton the
-mechanical ability to approve a pull request. It does not make him a deputy reviewer,
-because a deputy who may approve anything is not a control, and it does not make him an
-acceptance authority, because §3.3 would then need the sponsor to be someone else again.
-The two appointments it could support are a **deputy independent reviewer** — which would
-answer §11 Q10 and remove the pressure to lift branch protection when one reviewer is
-away — or the **acceptance authority**, which would let the current reviewer stop holding
-both the change-level and the deliverable-level judgement. **Those are different
-decisions with different consequences, and picking one is the Project Authority's act,
-not an inference from a collaborator invitation.**
+mechanical ability to approve a pull request; it is the appointment that says what he may
+approve, and when.
+
+> **Stated 2026-10-18 by the owner as Project Authority (§11 Q10, Q3): Milton is deputy
+> independent reviewer now, and acceptance authority from Gate 4.** Recorded here as the
+> Project Authority's position; §12 is unsigned and this is not a substitute for signing
+> it.
+
+Tested against §3.3 the way the two-person set was tested above, the staged arrangement
+is compliant in both of its stages and strictly better in the second:
+
+| §3.3 provision | Now (owner sponsors + manages, Russell reviews + accepts, Milton deputises) | From Gate 4 (Milton accepts) |
+|---|---|---|
+| PM must not approve their own work | Satisfied | Satisfied |
+| Class A: sponsor ≠ final acceptance authority | Satisfied | Satisfied |
+| Nobody sole author, reviewer, tester *and* approver | Satisfied | Satisfied |
+| §5's own second point: reviewer and acceptance authority are one person | **Still true** | **Resolved** — the change-level check and the deliverable-level acceptance become two people |
+
+**What the appointment fixes immediately:** §11 Q10's gap. An unavailable reviewer no
+longer leaves lifting branch protection as the only route to a merge, which was the
+pressure §4 created the moment the rules were set to bind everyone.
+
+**What it does not fix, and must be written down before it is useful.** A deputy who may
+approve anything, at any time, is not a control — it is a second unconditional approver,
+and the project would then have two people who can each wave anything through rather than
+one reviewer with a scope. The appointment needs a stated **trigger** (what counts as the
+primary being unavailable, and who records it), a stated **scope** (whether the deputy
+may approve everything the primary may, or a narrower set that excludes, say, changes to
+`src/seal/core` or to the decision packs), and for the Gate 4 half, a stated **start
+condition** — Gate 4 is an event the tracker records, so "from Gate 4" is checkable, but
+only if someone says whether it means the gate decision or the readiness review that
+precedes it. §9 carries those as recommendations; §11 Q4 and Q5 stay open until they are
+stated.
 
 ## 6. What the evidence cannot show
 
@@ -353,13 +377,21 @@ recommendation in §9 is taken, D11 inherits two concrete line items from it.
    stated scope are the gap §3 names, and this is the cheapest part of D01 to close.
 4. **State the review period and a revisit date**, so the appointment can lapse rather
    than fade.
-5. **Record the absence of a deputy as a named, time-bound gap** with its consequence
-   stated: with one reviewer and no deputy, work either waits or merges unreviewed when
-   he is unavailable, and the second is what happens under deadline. Name who decides
-   which, and the date the gap is revisited. Do **not** route this through §3.3's
-   compensating-assurance clause — the arrangement needs no exception, and for Class A
-   that clause would escalate to an Executive Authority chaired by the same person who
-   authored every change.
+5. ~~Record the absence of a deputy as a named, time-bound gap.~~ **Superseded
+   2026-10-18**: the Project Authority stated the staged appointment in §5 — Milton as
+   deputy independent reviewer now, acceptance authority from Gate 4 — so there is a
+   deputy to appoint rather than a gap to record. Three things still have to be stated
+   for it to function, and this pack proposes them rather than assuming them:
+   **(a)** the deputy's trigger — suggested: the primary reviewer unavailable for two
+   consecutive business days, recorded in the pull request by whoever invokes it, so an
+   invocation leaves a trace instead of being inferred from who clicked approve;
+   **(b)** the deputy's scope — suggested: the same scope as the primary, since a
+   narrower one means the urgent change that needed a deputy is the one he may not
+   approve; **(c)** what "from Gate 4" means for the acceptance half — the gate decision
+   itself, or the readiness review preceding it. Still do **not** route any of this
+   through §3.3's compensating-assurance clause: the arrangement needs no exception, and
+   for Class A that clause escalates to an Executive Authority chaired by the same person
+   who authored every change here.
 6. ~~Configure branch protection on `main`.~~ **Done, 2026-10-18** — the
    shortest-lived recommendation in the pack, superseded within hours of being written.
    §4 records the configuration: one approving review, the four existing status checks,
@@ -379,8 +411,12 @@ Authority may reject any part of it.
    still read 14/14 or better, that no merge has landed without an approving review, and
    what section 2 now says about protection. The probe reads live GitHub state, so both
    a lapse in practice and a change in enforcement show up as changed lines.
-2. Confirm directly with Russell Kenny that he accepts both the independent reviewer
-   and the acceptance authority appointment, their scope and their period. §3's evidence is fourteen approvals, which is
+2. Confirm directly with Russell Kenny that he accepts the independent reviewer
+   appointment and, until Gate 4, the acceptance authority role, with their scope and
+   period. Confirm separately with Milton that he accepts the deputy reviewer appointment
+   now and the acceptance authority appointment from Gate 4 — he has been *invited to the
+   repository*, which is consent to nothing, and at the time of writing the invitation
+   itself is still unaccepted. §3's evidence is fourteen approvals, which is
    consent to review changes, not consent to hold an appointment. Appendix E.3's
    first-five-days list is a *proposed* assignment, and an unaccepted assignment leaves
    the task Blocked however complete this pack is.
@@ -408,7 +444,8 @@ Authority may reject any part of it.
    account they review under is the company's own?
 3. Is the reviewer and the acceptance authority being the same person accepted for a
    Class A / Class 3 project, given §3.3 permits it and §5's second point records
-   what it concentrates?
+   what it concentrates? **Answered 2026-10-18: accepted until Gate 4, then separated —
+   Milton takes acceptance from Gate 4 and Russell keeps change-level review (§5).**
 4. What exactly does the independent reviewer review for, and what may they refuse?
 5. For how long does each appointment run, and what triggers a revisit?
 6. Is the sponsor a distinct appointment here, or does the Project Authority hold it?
@@ -424,10 +461,12 @@ Authority may reject any part of it.
 10. Who deputises when the single independent reviewer is unavailable — and until
     someone does, who holds the authority to lift branch protection, on what record, and
     for how long? §4's configuration turned this from a staffing preference into the
-    project's only route to merging in that situation. **A candidate now exists:
-    `MiltonBello15` was invited at write on 2026-10-18 (§2). What is open is whether he
-    is appointed deputy reviewer, acceptance authority, or neither, and what he may
-    approve — not whether he can click approve, which write access already settles.**
+    project's only route to merging in that situation. **Answered 2026-10-18: Milton
+    (`MiltonBello15`) is deputy independent reviewer, effective now, and acceptance
+    authority from Gate 4 (§5).** What remains open is not who, but on what terms — the
+    deputy's trigger, his scope, and what "from Gate 4" means — which §9.5 proposes and
+    §11 Q4/Q5 still need stated. Until the trigger is recorded, an invocation of the
+    deputy is indistinguishable from a second unconditional approver.
 
 ## 12. Decision record — unsigned
 
@@ -444,7 +483,23 @@ Authority may reject any part of it.
 | Separation exceptions recorded | *(unset)* |
 | Date | *(unset)* |
 
-**This table is deliberately empty.** D01 is recorded as "Unconfirmed / Blocked" in
+**Positions the Project Authority has stated but not signed**, as of 2026-10-18, each
+recorded where the question it answers lives:
+
+| Position | Stated | Where |
+|---|---|---|
+| The owner holds the Project Authority for this project | "Sure I'm the one", directing publication | §4, §11 Q1 |
+| The repository is public, and protection binds administrators | Directed and configured the same day | §4 |
+| Milton (`MiltonBello15`) is deputy independent reviewer, effective now | Stated | §5, §11 Q10 |
+| Milton is acceptance authority from Gate 4 | Stated | §5, §11 Q3 |
+
+Those are positions on record, which the project may act on and which this pack has
+acted on in §5, §9 and §11. **They are not the table above.** The table needs names
+against every row, a scope, a period, and a signature, and the three of those four that
+are still missing are missing because nobody has stated them, not because nobody has
+written them down.
+
+**The table itself is deliberately empty.** D01 is recorded as "Unconfirmed / Blocked" in
 Appendix E.3 and nothing in this repository can change that. An appointment is a named
 human authority's act; no document, probe or tooling in this project may record one on
 anyone's behalf, and that applies with particular force to a decision whose entire
